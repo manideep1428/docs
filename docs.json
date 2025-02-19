@@ -1,0 +1,164 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Planpoint Viewer Docs",
+  "colors": {
+    "primary": "#0f68ea",
+    "light": "#f0f2f4",
+    "dark": "#0f68ea"
+  },
+  "favicon": "favicon.svg",
+  "navigation": {
+    "anchors": [
+      {
+        "anchor": "Documentation",
+        "icon": "book-open",
+        "tabs": [
+          {
+            "tab": "General",
+            "groups": [
+              {
+                "group": "Creation",
+                "pages": [
+                  "welcome",
+                  "checklist",
+                  "settings",
+                  "exterior",
+                  "units",
+                  "floors",
+                  "preview-embed",
+                  "media-gallery"
+                ]
+              },
+              {
+                "group": "Editing and Management",
+                "pages": [
+                  "edit-info",
+                  "members",
+                  "link-units",
+                  "colors"
+                ]
+              },
+              {
+                "group": "Advanced Features",
+                "pages": [
+                  "multi-phase",
+                  "enterprise",
+                  "360",
+                  "custom-forms",
+                  "homes-land",
+                  "unit-variants",
+                  "amenities-parkings",
+                  "custom-buttons",
+                  "conversion-tracking",
+                  "allocations",
+                  "zapier"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API",
+            "groups": [
+              {
+                "group": "General",
+                "pages": [
+                  "api-documentation/introduction"
+                ]
+              },
+              {
+                "group": "Authentication",
+                "pages": [
+                  "api-documentation/endpoint/user/login"
+                ]
+              },
+              {
+                "group": "GET",
+                "pages": [
+                  "api-documentation/endpoint/groups/get",
+                  "api-documentation/endpoint/projects/get",
+                  "api-documentation/endpoint/projects/id/get",
+                  "api-documentation/endpoint/floors/get",
+                  "api-documentation/endpoint/floors/id/get",
+                  "api-documentation/endpoint/leads/get"
+                ]
+              },
+              {
+                "group": "POST",
+                "pages": [
+                  "api-documentation/endpoint/groups/post",
+                  "api-documentation/endpoint/projects/post",
+                  "api-documentation/endpoint/floors/post"
+                ]
+              },
+              {
+                "group": "PATCH",
+                "pages": [
+                  "api-documentation/endpoint/groups/patch",
+                  "api-documentation/endpoint/projects/id/patch",
+                  "api-documentation/endpoint/floors/id/patch"
+                ]
+              },
+              {
+                "group": "DELETE",
+                "pages": [
+                  "api-documentation/endpoint/units/id/delete"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "SDK",
+            "groups": [
+              {
+                "group": "General",
+                "pages": [
+                  "sdk-documentation/introduction"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "anchor": "New releases",
+        "href": "https://www.planpoint.io/new-releases/updates",
+        "icon": "newspaper"
+      },
+      {
+        "anchor": "Main website",
+        "href": "https://www.planpoint.io/",
+        "icon": "globe"
+      },
+      {
+        "anchor": "Support",
+        "href": "mailto:support@planpoint.io",
+        "icon": "envelope-dot"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@planpoint.io"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://app.planpoint.io/login"
+    }
+  },
+  "footer": {
+    "socials": {
+      "instagram": "https://www.instagram.com/planpoint.io/",
+      "linkedin": "https://www.linkedin.com/company/68575632/",
+      "github": "https://github.com/"
+    }
+  }
+}
