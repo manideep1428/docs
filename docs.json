@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "Mint Starter Kit",
   "colors": {
     "primary": "#16A34A",
@@ -16,20 +16,65 @@
           {
             "group": "Get Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "get-started/alchroma",
+              "get-started/setup-account",
+              "get-started/supported-devices"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Importing Your Image",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "importing/recommended-image",
+              "importing/cropping",
+              "importing/troubleshooting"
+            ]
+          },
+          {
+            "group": "Generating Your Outline",
+            "pages": [
+              "generating-outline/projector-outline",
+              "generating-outline/adjusting-contrast",
+              "generating-outline/printing-vs-digital-projection"
+            ]
+          },
+          {
+            "group": "Creating Brushstroke Maps",
+            "pages": [
+              "brush-maps/stroke-deformation",
+              "brush-maps/Adjust-stroke-density-and-size",
+              "brush-maps/previewing-the-layered-progression"
+            ]
+          },
+          {
+            "group": "Color Matching & Paint Recipes",
+            "pages": [
+              "color-matching/how-color-extraction-works",
+              "color-matching/getting-vendor-specific-tube-codes",
+              "color-matching/saving-and-exporting"
+            ]
+          },
+          {
+            "group": "Painting Step by Step",
+            "pages": [
+              "painting/stepwise-painting-mode",
+              "painting/tips-for-blending-and-layering",
+              "painting/troubleshooting"
+            ]
+          },
+          {
+            "group": "Account & Subscription",
+            "pages": [
+              "account-subscriptions/managing-your-plan",
+              "account-subscriptions/reset-password",
+              "account-subscriptions/cancel-subscription"
+            ]
+          },
+          {
+            "group": "FAQs & Troubleshooting",
+            "pages": [
+              "faqs/most-common-questions",
+              "faqs/contacting-support",
+              "faqs/feedback-feature-requests"
             ]
           }
         ]
