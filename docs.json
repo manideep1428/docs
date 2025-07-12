@@ -91,11 +91,10 @@
           {
             "group": "Endpoint Examples",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
+              "api-reference/endpoints/recipes/post",
+              "api-reference/endpoints/merge_colors/post",
+              "api-reference/endpoints/oil-paint/post",
+              "api-reference/endpoints/foogle-art/post"            ]
           }
         ]
       }

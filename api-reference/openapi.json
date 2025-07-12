@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "Image2Paint Converter API",
+    "description": "A comprehensive API for generating paint recipes, mixing colors, applying oil-paint filters, and creating geometric art from images",
     "license": {
       "name": "MIT"
     },
@@ -10,45 +10,52 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
+      "url": "http://localhost:5000",
+      "description": "Local development server"
+    },
     {
-      "bearerAuth": []
+      "url": "http://{host}:{port}",
+      "description": "Custom server",
+      "variables": {
+        "host": {
+          "default": "localhost",
+          "description": "Server host"
+        },
+        "port": {
+          "default": "5000",
+          "description": "Server port"
+        }
+      }
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+    "/api/recipes": {
+      "post": {
+        "summary": "Generate Paint Recipes",
+        "description": "Generate up to 3 paint mixing recipes to achieve a target color",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeRequest"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Successfully generated paint recipes",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                  "$ref": "#/components/schemas/RecipeResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
+            "description": "Bad request - invalid parameters",
             "content": {
               "application/json": {
                 "schema": {
@@ -56,35 +63,9 @@
                 }
               }
             }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
           },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
+          "500": {
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,28 +77,139 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
+    "/api/merge_colors": {
+      "post": {
+        "summary": "Merge Colors",
+        "description": "Mix arbitrary colors with specified weights to create a new color",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MergeColorsRequest"
+              }
             }
           }
-        ],
+        },
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "Successfully merged colors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MergeColorsResponse"
+                }
+              }
+            }
           },
           "400": {
-            "description": "unexpected error",
+            "description": "Bad request - invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oil_paint": {
+      "post": {
+        "summary": "Apply Oil Paint Filter",
+        "description": "Apply an oil painting filter effect to an uploaded image",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OilPaintRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully applied oil paint filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OilPaintResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid image or parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/foogle_art": {
+      "post": {
+        "summary": "Generate Foogle-Man Shape Art",
+        "description": "Transform an image into geometric shape-based art using circles, rectangles, or triangles",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FoogleArtRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated shape art",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoogleArtResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid image or parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -130,79 +222,316 @@
       }
     }
   },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
   "components": {
     "schemas": {
-      "Plant": {
+      "RecipeRequest": {
+        "type": "object",
         "required": [
-          "name"
+          "target",
+          "db_choice"
         ],
+        "properties": {
+          "target": {
+            "type": "array",
+            "description": "Target RGB color values",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "example": [200, 100, 150]
+          },
+          "db_choice": {
+            "type": "string",
+            "description": "Database name (must match a section name in color.txt)",
+            "example": "Standard Paints"
+          },
+          "step": {
+            "type": "number",
+            "description": "Mix-step percentage for recipe generation",
+            "default": 10.0,
+            "minimum": 0.1,
+            "maximum": 100.0,
+            "example": 5.0
+          }
+        }
+      },
+      "RecipeResponse": {
+        "type": "object",
+        "properties": {
+          "recipes": {
+            "type": "array",
+            "description": "Array of up to 3 paint mixing recipes",
+            "items": {
+              "$ref": "#/components/schemas/Recipe"
+            }
+          }
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "recipe": {
+            "type": "array",
+            "description": "List of paint colors and their percentages",
+            "items": {
+              "$ref": "#/components/schemas/PaintColor"
+            }
+          },
+          "mix": {
+            "type": "array",
+            "description": "Resulting RGB color from mixing",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "example": [200, 90, 50]
+          },
+          "error": {
+            "type": "number",
+            "description": "Color difference error from target",
+            "example": 1.50
+          }
+        }
+      },
+      "PaintColor": {
         "type": "object",
         "properties": {
           "name": {
-            "description": "The name of the plant",
-            "type": "string"
+            "type": "string",
+            "description": "Name of the paint color",
+            "example": "Sunset Orange"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "perc": {
+            "type": "number",
+            "description": "Percentage of this color in the mix",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 50
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "MergeColorsRequest": {
+        "type": "object",
+        "required": [
+          "colors"
+        ],
+        "properties": {
+          "colors": {
+            "type": "array",
+            "description": "Array of colors with their RGB values and weights",
+            "items": {
+              "$ref": "#/components/schemas/WeightedColor"
+            },
+            "minItems": 2
+          }
+        }
+      },
+      "WeightedColor": {
+        "type": "object",
+        "required": [
+          "rgb",
+          "weight"
+        ],
+        "properties": {
+          "rgb": {
+            "type": "array",
+            "description": "RGB color values",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "example": [255, 0, 0]
           },
-          {
-            "required": [
-              "id"
+          "weight": {
+            "type": "number",
+            "description": "Weight of this color in the mix",
+            "minimum": 0,
+            "example": 0.5
+          }
+        }
+      },
+      "MergeColorsResponse": {
+        "type": "object",
+        "properties": {
+          "mixed_rgb": {
+            "type": "array",
+            "description": "Resulting RGB color from mixing",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "example": [128, 64, 32]
+          }
+        }
+      },
+      "OilPaintRequest": {
+        "type": "object",
+        "required": [
+          "oil_image"
+        ],
+        "properties": {
+          "oil_image": {
+            "type": "string",
+            "format": "binary",
+            "description": "Image file to apply oil paint filter (.png, .jpg, .jpeg, .webp)"
+          },
+          "intensity": {
+            "type": "integer",
+            "description": "Number of epochs for oil paint effect",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 100,
+            "example": 15
+          }
+        }
+      },
+      "OilPaintResponse": {
+        "type": "object",
+        "properties": {
+          "result_image": {
+            "type": "string",
+            "description": "Base64-encoded PNG image with oil paint effect applied",
+            "example": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+          }
+        }
+      },
+      "FoogleArtRequest": {
+        "type": "object",
+        "required": [
+          "image",
+          "shape_type",
+          "min_size",
+          "max_size",
+          "num_shapes"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "description": "Image file to transform into shape art"
+          },
+          "shape_type": {
+            "type": "string",
+            "enum": [
+              "Circles",
+              "Rectangles",
+              "Triangles"
             ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+            "description": "Type of shapes to use for the art",
+            "example": "Triangles"
+          },
+          "min_size": {
+            "type": "integer",
+            "description": "Minimum size of shapes",
+            "minimum": 1,
+            "example": 10
+          },
+          "max_size": {
+            "type": "integer",
+            "description": "Maximum size of shapes",
+            "minimum": 1,
+            "example": 40
+          },
+          "num_shapes": {
+            "type": "integer",
+            "description": "Number of shapes to generate",
+            "minimum": 1,
+            "example": 150
+          }
+        }
+      },
+      "FoogleArtResponse": {
+        "type": "object",
+        "properties": {
+          "original_image": {
+            "type": "string",
+            "description": "Base64-encoded PNG of the original image",
+            "example": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+          },
+          "generated_image": {
+            "type": "string",
+            "description": "Base64-encoded PNG of the generated shape art",
+            "example": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+          },
+          "shapes": {
+            "type": "array",
+            "description": "Array of generated shapes with their properties",
+            "items": {
+              "$ref": "#/components/schemas/Shape"
             }
           }
-        ]
+        }
+      },
+      "Shape": {
+        "type": "object",
+        "properties": {
+          "center": {
+            "type": "array",
+            "description": "Center coordinates [x, y] of the shape",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "example": [255, 718]
+          },
+          "color": {
+            "type": "array",
+            "description": "RGB color values of the shape",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "example": [14, 58, 5]
+          },
+          "radius": {
+            "type": "integer",
+            "description": "Radius of the shape (for circles)",
+            "minimum": 1,
+            "example": 38
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the shape",
+            "enum": [
+              "Circle",
+              "Rectangle",
+              "Triangle"
+            ],
+            "example": "Circle"
+          }
+        }
       },
       "Error": {
+        "type": "object",
         "required": [
           "error",
           "message"
         ],
-        "type": "object",
         "properties": {
           "error": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "HTTP error code"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Error description"
           }
         }
       }
