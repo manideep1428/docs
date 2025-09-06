@@ -1,0 +1,184 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Debounce API",
+  "colors": {
+    "primary": "#047BF8",
+    "light": "#047BF8",
+    "dark": "#047BF8"
+  },
+  "styling": {
+      "eyebrows": "breadcrumbs"
+  },
+  "favicon": "/favicon.ico",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": ["index"]
+          },
+          {
+            "group": "API Concepts",
+            "pages": [
+              "api-concepts/authentication",
+              "api-concepts/request",
+              "api-concepts/responses",
+              "api-concepts/rate-limiting",
+              "api-concepts/https-codes"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Single email validation",
+            "pages": ["api-reference/endpoint/single-validation"]
+          },
+          {
+            "group": "Bulk validation",
+            "pages": [
+              "api-reference/endpoint/bulk/bulk-validation",
+              "api-reference/endpoint/bulk/status"
+            ]
+          },{
+            "group": "Enrichment",
+            "pages": ["api-reference/endpoint/enrichment"]
+          },
+          {
+            "group": "Miscellaneous",
+            "pages": ["api-reference/endpoint/miscellaneous/balance","api-reference/endpoint/miscellaneous/usage"]
+          },
+          {
+            "group": "Free",
+            "pages": ["api-reference/endpoint/free/disposible-detector"]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Home",
+          "href": "https://debounce.io",
+          "icon": "house"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://x.com/debounce",
+          "icon": "slack"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://debounce.io/blog/",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/logo.png",
+    "dark": "/logo/dark.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "https://debounce.io/contact"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://debounce.io"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/debounce",
+      "linkedin": "https://www.linkedin.com/company/debounce",
+      "youtube": "https://www.youtube.com/@debounce"
+    },
+    "links": [
+      {
+        "header": "Company",
+        "items": [
+          {
+            "label": "Contact Us",
+            "href": "https://debounce.io/contact/"
+          },
+          {
+            "label": "Pricing",
+            "href": "https://debounce.io/pricing/"
+          },
+          {
+            "label": "Privacy Policy",
+            "href": "https://debounce.io/privacy-policy/"
+          },
+          {
+            "label": "GDPR",
+            "href": "https://debounce.io/gdpr/"
+          }
+        ]
+      },
+      {
+        "header": "Resources",
+        "items": [
+          {
+            "label": "Blog",
+            "href": "https://debounce.io/blog/"
+          },
+          {
+            "label": "Help Desk",
+            "href": "https://help.debounce.io/kb/"
+          },
+          {
+            "label": "Glossary",
+            "href": "https://debounce.io/glossary/"
+          },
+          {
+            "label": "Reviews",
+            "href": "https://www.trustpilot.com/review/debounce.io"
+          }
+        ]
+      },
+      {
+        "header": "Integrations",
+        "items": [
+          {
+            "label": "API",
+            "href": "https://debounce.io/solutions/api/"
+          },
+          {
+            "label": "WordPress",
+            "href": "https://debounce.io/integrations/wordpress-plugin/"
+          },
+          {
+            "label": "JS Widget",
+            "href": "https://debounce.io/solutions/javascript-widget/"
+          },
+          {
+            "label": "All",
+            "href": "https://debounce.io/integrations/"
+          }
+        ]
+      }
+    ]
+  }
+}

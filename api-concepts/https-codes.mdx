@@ -1,0 +1,52 @@
+---
+title: "HTTP Status Codes"
+description: "List of HTTP status codes returned by the DeBounce API with descriptions"
+icon: "code"
+---
+
+Here's a list of the status codes used in DeBounce API responses:
+
+<div className="overflow-x-auto">
+  <table className="w-full border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-[#090b10]">
+    <thead>
+      <tr>
+        <th className="border border-gray-300 dark:border-gray-700 px-6 py-4 text-left text-lg font-semibold w-1/6 bg-white dark:bg-[#090b10]">
+          Code
+        </th>
+        <th className="border border-gray-300 dark:border-gray-700 px-6 py-4 text-left text-lg font-semibold w-1/6 bg-white dark:bg-[#090b10]">
+          Name
+        </th>
+        <th className="border border-gray-300 dark:border-gray-700 px-6 py-4 text-left text-lg font-semibold bg-white dark:bg-[#090b10]">
+          Description
+        </th>
+      </tr>
+    </thead>
+    <tbody className="text-base">
+      <tr className="bg-white dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4 font-bold">200</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">OK</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Request fulfilled</td>
+      </tr>
+      <tr className="bg-white dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4 font-bold">401</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Unauthorized</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Invalid API token</td>
+      </tr>
+      <tr className="bg-white dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4 font-bold">402</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Payment Required</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Validation credits are finished. Buy credits to validate more emails.</td>
+      </tr>
+      <tr className="bg-white dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4 font-bold">403</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Forbidden</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Request not allowed</td>
+      </tr>
+      <tr className="bg-white dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4 font-bold">429</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Too Many Requests</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">Rate limit has been exceeded</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

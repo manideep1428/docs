@@ -1,0 +1,59 @@
+---
+title: "Requests - URL Formats"
+icon: "link"
+---
+
+The Public API format supports authentication via API key authentication. It has the format:
+
+```
+https\://{hostname}/{api-version}/{area}/\[path]?\[parameters]
+```
+
+For the Public API format, the components of the URL are:
+
+<div className="overflow-x-auto">
+  <table className="w-full border-gray-300 dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-[#090b10]">
+    <thead>
+      <tr>
+        <th className="border border-gray-300 dark:border-gray-700 px-6 py-4 text-left text-lg font-semibold w-1/4">
+          Component
+        </th>
+        <th className="border border-gray-300 dark:border-gray-700 px-6 py-4 text-left text-lg font-semibold">
+          Description
+        </th>
+      </tr>
+    </thead>
+    <tbody className="text-base">
+      <tr className="bg-[#ffffff] dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">hostname</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">
+          The base URL, such as <code>api.debounce.io</code>, <code>bulk.debounce.io</code>, or <code>disposable.debounce.io</code>
+        </td>
+      </tr>
+      <tr className="bg-[#ffffff] dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">api-version</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">
+          The version of the API to use, for example <code>v1</code>
+        </td>
+      </tr>
+      <tr className="bg-[#ffffff] dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">area</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">
+          Supported query types include <code>metrics</code>, <code>events</code>, and <code>queries</code>
+        </td>
+      </tr>
+      <tr className="bg-[#ffffff] dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">path</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">
+          Additional specifics for the request, such as which metric to query
+        </td>
+      </tr>
+      <tr className="bg-[#ffffff] dark:bg-[#090b10]">
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">parameters</td>
+        <td className="border border-gray-300 dark:border-gray-700 px-6 py-4">
+          Query parameters that specify the details of the data, depending on the query path
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

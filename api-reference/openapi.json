@@ -1,0 +1,864 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Debounce Email Validation API",
+    "description": "A comprehensive email validation API that provides single email validation, bulk email list processing, and additional enrichment capabilities",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.debounce.io"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyQuery": []
+    }
+  ],
+  "paths": {
+    "/v1/": {
+      "get": {
+        "summary": "Validate single email address",
+        "description": "Validates a single email address and returns detailed validation results",
+        "operationId": "validateEmail",
+        "servers": [
+          {
+            "url": "https://api.debounce.io"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Your Debounce API key"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "email"
+            },
+            "description": "The email address you want to validate"
+          },
+          {
+            "name": "photo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If set to true, returns profile photo (extra credits apply)"
+          },
+          {
+            "name": "append",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If set to true, enriches with full name and avatar (extra credits apply)"
+          },
+          {
+            "name": "gsuite",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If set to true, detects G Suite accept-all emails"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validation successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "debounce": {
+                    "error": "Wrong API",
+                    "code": "0"
+                  },
+                  "success": "0"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Credits Low",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "debounce": {
+                    "error": "Credits Low",
+                    "code": "0"
+                  },
+                  "success": "0"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests / Daily Limit Reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "tooManyRequests": {
+                    "summary": "Too many concurrent calls",
+                    "value": {
+                      "debounce": {
+                        "error": "Maximum concurrent calls reached",
+                        "code": "0"
+                      },
+                      "success": "0"
+                    }
+                  },
+                  "dailyLimit": {
+                    "summary": "Daily limit reached (Public API key)",
+                    "value": {
+                      "debounce": {
+                        "error": "Authentication Failed - The maximum number of calls per day reached."
+                      },
+                      "success": "0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/upload/": {
+      "get": {
+        "summary": "Upload bulk email list",
+        "operationId": "uploadBulkList",
+        "servers": [
+          {
+            "url": "https://bulk.debounce.io"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "description": "Your Debounce API key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "description": "Public URL to your CSV file containing email addresses",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bulk upload accepted and processing started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkUploadResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid URL or file format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/status/": {
+      "get": {
+        "summary": "Check bulk validation status",
+        "operationId": "checkBulkStatus",
+        "servers": [
+          {
+            "url": "https://bulk.debounce.io"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "query",
+            "description": "The list ID returned from the upload request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkStatusResult"
+                },
+                "examples": {
+                  "processing": {
+                    "summary": "List is currently being processed",
+                    "value": {
+                      "debounce": {
+                        "list_id": "20664",
+                        "status": "processing",
+                        "percentage": 39,
+                        "download_link": ""
+                      },
+                      "success": "1"
+                    }
+                  },
+                  "completed": {
+                    "summary": "Validation completed",
+                    "value": {
+                      "debounce": {
+                        "list_id": "20664",
+                        "status": "completed",
+                        "percentage": 100,
+                        "download_link": "https://cdn.debounce.io/get/report/20664-5efwsdbsccsd.csv"
+                      },
+                      "success": "1"
+                    }
+                  },
+                  "error": {
+                    "summary": "Invalid list ID",
+                    "value": {
+                      "debounce": {
+                        "error": "List ID is not valid."
+                      },
+                      "success": "0"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid list ID or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "debounce": {
+                    "error": "List ID is not valid."
+                  },
+                  "success": "0"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/reverse/": {
+      "get": {
+        "summary": "Reverse email lookup",
+        "description": "Reverse email lookup to find additional data associated with an email address",
+        "operationId": "reverseEmailLookup",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "description": "Your Debounce API key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The email address to lookup",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reverse lookup completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReverseResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/balance/": {
+      "get": {
+        "summary": "Get account balance",
+        "operationId": "getBalance",
+        "tags": [
+          "Account Management"
+        ],
+        "servers": [
+          {
+            "url": "https://api.debounce.io"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "description": "Your Debounce API key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "kjsendkjsndkjksdkjdk"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account balance retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResult"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Successful balance retrieval",
+                    "value": {
+                      "balance": 1986406,
+                      "success": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "debounce": {
+                    "error": "Wrong API",
+                    "code": "0"
+                  },
+                  "success": "0"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Credits Low",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "debounce": {
+                    "error": "Credits Low",
+                    "code": "0"
+                  },
+                  "success": "0"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/usage/": {
+      "get": {
+        "summary": "Get usage statistics",
+        "operationId": "getUsage",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "description": "Your Debounce API key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date. Must be after 20-08-14 (YY-MM-DD)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}-\\d{2}-\\d{2}$",
+              "example": "24-01-01"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date. Equal or less than today's date (YY-MM-DD)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}-\\d{2}-\\d{2}$",
+              "example": "24-12-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usage history retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Check disposable email",
+        "description": "Free API as easy as hitting a URL. Check a domain or email address against a real-time, up-to-date list of disposable domains",
+        "operationId": "checkDisposableEmail",
+        "servers": [
+          {
+            "url": "https://disposable.debounce.io"
+          }
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The email address or domain to check",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Disposable email check completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisposableResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidationResult": {
+        "type": "object",
+        "required": [
+          "email",
+          "result",
+          "success"
+        ],
+        "properties": {
+          "email": {
+            "description": "The email address that was validated",
+            "type": "string",
+            "format": "email",
+            "example": "test@example.com"
+          },
+          "code": {
+            "description": "Response code",
+            "type": "integer",
+            "example": 1
+          },
+          "role": {
+            "description": "Whether the email is a role-based email",
+            "type": "boolean",
+            "example": false
+          },
+          "free_email": {
+            "description": "Whether the email uses a free email provider",
+            "type": "boolean",
+            "example": true
+          },
+          "result": {
+            "description": "Overall validation result",
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Risky",
+              "Safe to Send",
+              "Unknown"
+            ],
+            "example": "Safe to Send"
+          },
+          "reason": {
+            "description": "Detailed reason for the validation result",
+            "type": "string",
+            "example": "Valid MX records"
+          },
+          "send_transactional": {
+            "description": "Whether it's safe to send transactional emails",
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "example": 1
+          },
+          "did_you_mean": {
+            "description": "Suggested correction if there's a typo in the email",
+            "type": "string",
+            "example": ""
+          },
+          "success": {
+            "description": "Whether the validation was successful",
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "example": 1
+          },
+          "balance": {
+            "description": "Remaining API credits balance",
+            "type": "integer",
+            "example": 4921
+          }
+        }
+      },
+      "BulkUploadResult": {
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "properties": {
+          "debounce": {
+            "type": "object",
+            "properties": {
+              "list_id": {
+                "description": "Unique identifier for the uploaded list",
+                "type": "string"
+              },
+              "list_name": {
+                "description": "Name of the uploaded list",
+                "type": "string"
+              }
+            }
+          },
+          "success": {
+            "description": "Whether the upload was successful",
+            "type": "string",
+            "enum": [
+              "0",
+              "1"
+            ]
+          }
+        }
+      },
+      "BulkStatusResult": {
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "properties": {
+          "debounce": {
+            "type": "object",
+            "properties": {
+              "list_id": {
+                "description": "Unique identifier for the list",
+                "type": "string"
+              },
+              "status": {
+                "description": "Current processing status",
+                "type": "string",
+                "enum": [
+                  "processing",
+                  "completed"
+                ]
+              },
+              "percentage": {
+                "description": "Processing completion percentage",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "download_link": {
+                "description": "Download link for completed results",
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          },
+          "success": {
+            "description": "Whether the status request was successful",
+            "type": "string",
+            "enum": [
+              "0",
+              "1"
+            ]
+          }
+        }
+      },
+      "ReverseResult": {
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "properties": {
+          "email": {
+            "description": "The email address that was looked up",
+            "type": "string",
+            "format": "email"
+          },
+          "data": {
+            "description": "Additional data found for the email address",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "success": {
+            "description": "Whether the lookup was successful",
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ]
+          }
+        }
+      },
+      "BalanceResult": {
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "properties": {
+          "balance": {
+            "description": "Current account balance",
+            "type": "integer",
+            "minimum": 0
+          },
+          "success": {
+            "description": "Whether the request was successful",
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ]
+          }
+        }
+      },
+      "UsageResult": {
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "properties": {
+          "debounce": {
+            "type": "object",
+            "properties": {
+              "api": {
+                "description": "API key identifier",
+                "type": "string"
+              },
+              "start": {
+                "description": "Start date",
+                "type": "string"
+              },
+              "end": {
+                "description": "End date",
+                "type": "string"
+              },
+              "calls": {
+                "description": "Number of API calls made",
+                "type": "string"
+              }
+            }
+          },
+          "success": {
+            "description": "Whether the request was successful",
+            "type": "string",
+            "enum": [
+              "0",
+              "1"
+            ]
+          }
+        }
+      },
+      "DisposableResult": {
+        "type": "object",
+        "required": [
+          "disposable"
+        ],
+        "properties": {
+          "disposable": {
+            "description": "Whether the email/domain is disposable",
+            "type": "boolean"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "debounce": {
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              }
+            }
+          },
+          "success": {
+            "type": "string",
+            "enum": [
+              "0"
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyQuery": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "api",
+        "description": "API key for authentication"
+      }
+    }
+  }
+}

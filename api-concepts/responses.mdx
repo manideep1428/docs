@@ -1,0 +1,45 @@
+---
+title: "API Responses"
+icon: "reply-all"
+---
+
+Each response sent from the API contains a `success` parameter (0/1) indicating whether the request was successful (`1`) or not (`0`). If `success = 0`, an optional `error` parameter (string) may be provided. If `success = 1`, the response is always contained within a `debounce` parameter.
+
+
+## Success Response
+
+All successful responses follow this schema:
+
+```json
+HTTP/1.1 200 OK
+
+{
+   "debounce": {
+      "email": "mohsen@gmail.com",
+      "code": "5",
+      "role": "false",
+      "free_email": "true",
+      "result": "Safe to Send",
+      "reason": "Deliverable",
+      "send_transactional": "1",
+      "did_you_mean": ""
+   },
+   "success": "1",
+   "balance": "1725935"
+}
+```
+
+## Error Response
+
+All error responses follow this schema:
+
+```json
+HTTP/1.1 401 Unauthorized
+
+{
+   "debounce": {
+      "error": "Wrong API",
+      "code": "0"
+   },
+   "success": "0"
+}

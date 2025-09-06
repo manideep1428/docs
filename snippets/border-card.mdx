@@ -1,0 +1,10 @@
+
+export default function NoteCard({ title, children }) {
+  return (
+    <div className="border-l-4 border-yellow-400 bg-yellow-50 p-4 rounded-md shadow-sm">
+      <h3 className="font-semibold text-yellow-800 flex items-center gap-2">
+        <span>📢</span> {title}
+      </h3>
+      <div className="mt-2 text-gray-700 text-sm">{children}</div>
+    </div>  );
+}

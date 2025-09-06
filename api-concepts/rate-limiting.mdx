@@ -1,0 +1,64 @@
+---
+title: "Rate Limiting"
+icon: "gauge"
+---
+
+
+## Regular API Key
+
+At DeBounce, we prioritize the stability and fairness of our platform for all users. To accomplish this, we have implemented rate-limiting on all of our APIs using a variety of strategies.
+
+To ensure that developers can work within these rate limits effectively, we recommend using industry-standard techniques for limiting API calls, caching results, and re-trying requests responsibly. These practices not only help ensure that your application remains in compliance with our rate limits but also improve the overall performance and efficiency of your application.
+
+By adhering to these best practices, developers can help to maintain the stability and reliability of the DeBounce platform, enabling all users to benefit from high-quality email verification and list cleaning services.
+
+To ensure optimal performance and stability for all users, our API has a maximum limit of **5 concurrent calls** (parallel connections). If you attempt to validate emails at a higher speed, you will receive an error message indicating that you have exceeded this limit. By enforcing this limit, we can prevent system overload and ensure that all users have equal access to our platform's resources.
+
+We recommend that developers adhere to this limit and adjust their API usage accordingly to avoid encountering this error. If you validate emails with a higher speed, you will get the following error:
+
+```json
+HTTP/429 Too Many Requests
+{
+   "debounce": {
+      "error": "Maximum concurrent calls reached",
+      "code": "0"
+   },
+   "success": "0"
+}
+````
+
+If the **"data enrichment"** option is enabled, this limitation becomes **2**. It means you cannot enrich more than two emails simultaneously.
+
+<Card id="rate-limit" title="📘 Need More Validation Rates?" href="https://debounce.io/contact" target="_blank">
+Do you need more validation speed? Contact us and discuss it with our team.
+</Card>
+
+
+## Public API Key
+
+The public API key starts with `public_` and is suitable for use in **JavaScript codes**. You must add your domain URL to the approved **CORS domain list** of the API key, so you can use this API Key.
+
+Each internet IP can validate **20 emails per day** using your widget. This is a security measure to protect your credits from an abuser. In this case, the widget shows:
+*"You performed many validations"* error message.
+
+If you validate more than 20 emails using the same internet IP address, you will get the following error:
+
+```json
+HTTP/429 Too Many Requests
+{
+   "debounce": {
+      "error": "Authentication Failed - The maximum number of calls per day reached."
+   },
+   "success": "0"
+}
+```
+
+You can find your current internet IP address by clicking here.
+
+---
+
+## Bulk Validation
+
+Our bulk validation API allows you to validate a single list simultaneously. If you have already uploaded a list using the DeBounce dashboard's list-upload feature and initiated the validation process, any additional bulk API jobs will be queued and automatically started once the initial job is complete. By limiting the bulk validation API to one list at a time, we can ensure that our system remains stable and efficient.
+
+The main rule is **one active bulk validation job per account**.

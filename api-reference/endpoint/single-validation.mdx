@@ -1,0 +1,22 @@
+---
+title: 'Single Email Validation'
+openapi: 'GET /v1/'
+---
+
+If you require a profile photo along with the validation results, just add `&photo=true` at the end of the API endpoint. We will bill you **0.2 extra credits** for each successful profile photo added.  
+
+To find the full name and avatar of an email owner, you must add the `&append=true` in the validation endpoint and you will pay **2 extra credits** for each successful data enrichment.
+
+<Warning icon="alert" className="bg-red-500">
+
+### Important Note
+
+If you are using this API in a sign-up form, you must consider  
+`Deliverable`, `Accept-all`, and `Unknown` statuses as valid,  
+so you do not miss out on new sign-ups.  
+
+Another simple way is by checking the `send_transactional` parameter:  
+
+If its value is `1`, the email is eligible for being a new user.  
+
+</Warning>

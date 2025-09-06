@@ -1,0 +1,27 @@
+---
+title: "Bulk Upload"
+openapi: "GET /v1/upload/"
+---
+
+You can run **only one list for validation at a time** (validate your email lists one by one).  
+- After upload, the list will **automatically start validation**.  
+- If you already have a running list, your uploaded file will be **queued for validation**.  
+
+<Note>
+To use this API endpoint:  
+- Upload the email list to **your own server**.  
+- Provide the **full URL** of the list.  
+- The URL must:  
+  - Start with `https`  
+  - End with `.csv` or `.txt`  
+</Note>
+<Warning>
+Public file-sharing platforms such as **Google Drive** or **Dropbox** are not supported.  
+You must use your **own server** for file sharing.  
+</Warning>
+
+**File requirements:**  
+- Must be **less than 20MB**  
+- Can contain a maximum of **200,000 emails**  
+
+If successful, you will receive a response like this:

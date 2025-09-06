@@ -1,0 +1,33 @@
+---
+title: "Data Append (Reverse Email Lookup API)"
+---
+
+Find the name of the owner's email address and its avatar using DeBounce data enrichment API.
+
+## Full name + Avatar
+
+To find the full name and avatar of an email owner, you need to use the [single validation request](/api-reference/endpoint/single-validation). To make the enrichment engine active, you must add the `&append=true` in the validation endpoint.
+
+<Note>
+**Pricing**
+
+You will pay 2 extra credits for each successful data enrichment.
+</Note>
+
+## Avatar Only
+
+If you require a profile photo along with the validation results, just add `&photo=true` at the end of the API endpoint.
+
+<Note>
+**Pricing**
+
+We will bill you 0.2 extra credits for each successful profile photo added.
+</Note>
+
+## Demo
+
+To see data enrichment in action, you can navigate to:
+
+<Card className="text bg-green-300" title="Data Enrichment Demo" icon="laptop" href="https://debounce.io/solutions/data-enrichment/">
+  Experience the data enrichment functionality
+</Card>

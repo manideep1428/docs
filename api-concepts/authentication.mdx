@@ -1,0 +1,32 @@
+---
+title: "Authentication"
+icon : "key"
+---
+
+
+All requests to the DeBounce API require authentication via an API key. This page explains how to obtain and use your API key.
+
+## API Key
+
+A DeBounce API key is a 13-character alphanumeric token unique to your account.
+
+
+<Note>
+The API key must be included in the query string of all requests using the `api` parameter.
+</Note>
+
+You can pass the API key by appending `&api=YOUR_API_KEY` to the request URL. This method allows authentication without custom headers.
+
+<Warning>
+Authentication is mandatory for all API requests. Requests without a valid API key will be rejected.
+</Warning>
+
+## Example Request
+
+Here's an example using cURL:
+
+```bash
+curl -X GET 'https://api.debounce.io/v1/?api=5ba3wcc43516dc&email=example@gmail.com'
+```
+
+To generate an API key, log in to your DeBounce account and navigate to the <Link href="https://app.debounce.io/api">API</Link> settings section.
