@@ -1,0 +1,81 @@
+---
+title: N8n Integration
+description: Connect n8n workflow automation to Emby for AI-powered workflows
+image: guides/n8n/overview.png
+icon: N8n
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+
+n8n is a powerful workflow automation tool that can be enhanced with AI capabilities through Emby. This guide shows how to integrate Emby into your n8n workflows.
+
+<img src="./assets/guides/n8n/overview.png" alt="n8n workflow with Emby" />
+
+## Prerequisites
+
+- An Emby account with an API key
+- n8n instance (self-hosted or cloud)
+- Basic understanding of n8n workflows
+
+## Setup
+
+The easiest way to use Emby with n8n is through the OpenAI node with custom configuration.
+
+<Steps>
+<Step>
+### Add OpenAI Credentials
+
+1. In n8n, go to **Settings** → **Credentials**
+
+<img src="./assets/guides/n8n/credential-1.png" alt="n8n credentials" />
+
+2. Click **Add Credential** → **OpenAI**
+
+<img src="./assets/guides/n8n/credential-2.png" alt="n8n credentials" />
+
+3. Configure as follows:
+   - **API Key**: Your Emby API key
+   - **Base URL**: `https://dev.emby.ai/v1`
+   - **Organization ID**: Leave blank
+
+<img src="./assets/guides/n8n/credential-3.png" alt="n8n credentials" />
+
+</Step>
+<Step>
+### Configure OpenAI Node
+
+1. Add an **AI Agent** node to your workflow
+2. Add a **Chat Model** edge to the node
+
+<img src="./assets/guides/n8n/node-1.png" alt="n8n credentials" />
+
+3. Configure the node to use the Emby provider
+
+<img src="./assets/guides/n8n/node-2.png" alt="n8n credentials" />
+
+<Callout type="warning">
+	Note: You have to toggle off the responses API. Emby does not support
+	it.
+</Callout>
+
+<img src="./assets/guides/n8n/responses-api.png" alt="responses api" />
+
+    4. Select your desired options
+
+- **Model**: Use any [Emby model](https://dev.emby.ai/models) ID (e.g., `gpt-5`)
+- **Options**: Optionally, configure LLM parameters
+
+<img src="./assets/guides/n8n/model.png" alt="n8n credentials" />
+
+</Step>
+
+<Step>
+### Test Workflow
+
+Finally, try running your workflow with a test prompt.
+
+<img src="./assets/guides/n8n/test.png" alt="n8n credentials" />
+
+</Step>
+</Steps>
