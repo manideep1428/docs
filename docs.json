@@ -3,22 +3,21 @@
   "theme": "mint",
   "name": "Mint Starter Kit",
   "colors": {
-    "primary": "#f55035",
-    "light": "#f55035",
-    "dark": "#f55035"
+    "primary": "#418fde",
+    "light": "#418fde",
+    "dark": "#418fde"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Docs",
+        "tab": "Overview",
         "groups": [
           {
             "group": "Quickstart",
             "pages": [
               "/index",
-              "quickstart",
-              "development"
+              "quickstart"
             ]
           },
           {
@@ -27,9 +26,15 @@
               "core-features/setup",
               "core-features/models",
               "core-features/text-generation",
-              "core-features/streaming"
+              "core-features/streaming",
+              "core-features/anthropic"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Integrations",
+        "groups": [
           {
             "group": "Integrations",
             "pages": [
@@ -65,18 +70,21 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Legal"
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Discord",
+          "href": "https://discord.gg/Emby",
+          "icon": "discord"
         },
         {
           "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
+          "href": "https://emby.io/blog",
           "icon": "newspaper"
         }
       ]

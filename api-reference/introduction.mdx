@@ -9,12 +9,19 @@ icon: code
 Emby supports two API formats:
 
 <CardGroup cols={2}>
-  <Card title="OpenAI Format" icon="robot">
+  <Card title="OpenAI Format">
     ```
     https://dev.emby.ai/v1
     ```
 
     Compatible with OpenAI SDKs and tools
+  </Card>
+   <Card title="Anthropic Format">
+    ```
+    https://dev.emby.ai/
+    ```
+
+    Compatible with Anthropic SDKs and tools
   </Card>
 
 </CardGroup>
@@ -37,27 +44,27 @@ Authorization: Bearer YOUR_API_KEY
 ## Core Endpoints
 
 <CardGroup cols={2}>
-  <Card title="Chat Completions" icon="comments" href="/en/api-reference/post-chat-completions">
+  <Card title="Chat Completions" icon="comments" href="/core-features/chat-completions">
     OpenAI-compatible chat API with streaming, function calling, and vision support
   </Card>
 
-  <Card title="Messages" icon="message" href="/en/api-reference/post-v1-messages">
+  <Card title="Anthropic" icon="message" href="/core-features/anthropic">
     Anthropic-compatible API with extended thinking, tools, and prompt caching
   </Card>
 
-  <Card title="Models" icon="list" href="/en/core-features/models">
-    List all 70+ AI models with capabilities, pricing, and context windows
+  <Card title="Models" icon="list" href="/core-features/models">
+    List all AI models with capabilities, pricing, and context windows
   </Card>
 </CardGroup>
 
 ## Advanced Features
 
 <CardGroup cols={2}>
-  <Card title="Streaming" icon="stream" href="/en/api-reference/endpoint/streaming">
+  <Card title="Streaming" icon="stream" href="/core-features/streaming">
     Real-time streaming responses with Server-Sent Events
   </Card>
 
-  <Card title="Function Calling" icon="function" href="/en/api-reference/endpoint/function-calling">
+  <Card title="Function Calling" icon="function" href="/core-features/function-calling">
     Enable AI to interact with external tools and APIs
   </Card>
 
@@ -118,6 +125,12 @@ Authorization: Bearer YOUR_API_KEY
 
 Rate limits vary by plan tier:
 
+
+<Danger>
+This is test Rate Limits
+</Danger>
+
+
 | Tier       | Requests/min | Tokens/min | Concurrent |
 | ---------- | ------------ | ---------- | ---------- |
 | Basic      | 60           | 90K        | 10         |
@@ -139,11 +152,11 @@ Emby is compatible with popular AI SDKs:
 ## Need Help?
 
 <CardGroup cols={2}>
-  <Card title="Developer Docs" icon="file-lines" href="/en/dev-docs/overview">
+  <Card title="Developer Docs" icon="file-lines" href="/">
     Comprehensive guides and tutorials
   </Card>
 
-  <Card title="Models Catalog" icon="robot" href="/en/home/models">
+  <Card title="Models Catalog" icon="robot" href="/core-features/models">
     Browse all 70+ available models
   </Card>
 </CardGroup>
