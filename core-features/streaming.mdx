@@ -22,38 +22,24 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
- 
-    # Required parameters
     messages=[
-        # Set an optional system message.
         {
             "role": "system",
             "content": "You are a helpful assistant."
         },
-        # Set a user message for the assistant to respond to.
         {
             "role": "user",
             "content": "Explain the importance of fast language models",
         }
     ],
-
-    # The language model which will generate the completion.
     model="gpt-5",
-
-    # Optional parameters
-
     temperature=0.5,
-
     max_completion_tokens=1024,
-
     top_p=1,
-
     stop=None,
-
     stream=True,
 )
 
-# Print the incremental deltas returned by the LLM.
 for chunk in stream:
     print(chunk.choices[0].delta.content, end="")
 ```
@@ -67,35 +53,24 @@ const client = new OpenAI({
 });
 
 const stream = await client.chat.completions.create({
-    // Required parameters
     messages: [
-        // Set an optional system message.
         {
             role: "system",
             content: "You are a helpful assistant."
         },
-        // Set a user message.
         {
             role: "user",
             content: "Explain the importance of fast language models",
         }
     ],
-
     model: "gpt-5",
-
     temperature: 0.5,
-
     max_completion_tokens: 1024,
-
     top_p: 1,
-
     stop: null,
-
-    // If set, partial message deltas will be sent.
     stream: true,
 });
 
-// Print the incremental deltas returned by the LLM.
 for await (const chunk of stream) {
     process.stdout.write(chunk.choices[0]?.delta?.content || "");
 }
@@ -114,7 +89,6 @@ import asyncio
 import os
 from openai import AsyncOpenAI
 
-
 async def main():
     client = AsyncOpenAI(
         api_key=os.environ.get("EMBY_API_KEY"),
@@ -122,7 +96,6 @@ async def main():
     )
 
     stream = await client.chat.completions.create(
-        # Required parameters
         messages=[
             {
                 "role": "system",
@@ -133,21 +106,14 @@ async def main():
                 "content": "Explain the importance of fast language models",
             }
         ],
-
         model="gpt-5",
-
         temperature=0.5,
-
         max_completion_tokens=1024,
         top_p=1,
-
         stop=None,
-
-        # If set, partial message deltas will be sent.
         stream=True,
     )
 
-    # Print the incremental deltas returned by the LLM.
     async for chunk in stream:
         print(chunk.choices[0].delta.content, end="")
 
@@ -165,28 +131,20 @@ const client = new OpenAI({
 async function main() {
     const stream = await client.chat.completions.create({
         messages: [
-           
             {
                 role: "system",
                 content: "You are a helpful assistant."
             },
-            // Set a user message for the assistant to respond to.
             {
                 role: "user",
                 content: "Explain the importance of fast language models",
             }
         ],
-
         model: "gpt-5",
-
         temperature: 0.5,
-
         max_completion_tokens: 1024,
-
         top_p: 1,
-
         stop: null,
-
         stream: true,
     });
 
@@ -285,7 +243,7 @@ async function streamWithBuffer() {
     });
     
     let buffer = "";
-    const bufferSize = 5; // Update UI every 5 chunks
+    const bufferSize = 5;
     let chunkCount = 0;
     
     for await (const chunk of stream) {
@@ -294,14 +252,12 @@ async function streamWithBuffer() {
         chunkCount++;
         
         if (chunkCount >= bufferSize) {
-            // Update UI with buffered content
             console.log(buffer);
             buffer = "";
             chunkCount = 0;
         }
     }
     
-    // Flush remaining buffer
     if (buffer) {
         console.log(buffer);
     }

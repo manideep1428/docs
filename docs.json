@@ -44,15 +44,21 @@
         "tab": "API Reference",
         "groups": [
           {
+            "group": "Overview",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
             "group": "Models",
             "pages": [
-              "api-reference/endpoints/models/get"
+              "api-reference/endpoint/models/get"
             ]
           },
           {
             "group": "Chat Completions",
             "pages": [
-              "api-reference/endpoints/completions/get"
+              "api-reference/endpoint/completions/get"
             ]
           }
         ]

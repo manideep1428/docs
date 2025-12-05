@@ -1,8 +1,8 @@
 ---
-    title: "Text Generation"
-    sidebarTitle: "Text Generation"
-    hide-title: true
-    icon : comment
+title: "Text Generation"
+sidebarTitle: "Text Generation"
+hide-title: true
+icon : comment
 ---
 
 For details about all available parameters, [visit the API reference page.](https://dev.emby.ai/docs/api-reference#chat-create)
@@ -40,25 +40,19 @@ client = OpenAI(
 
 chat_completion = client.chat.completions.create(
     messages=[
-        # Set an optional system message. This sets the behavior of the
-        # assistant and can be used to provide specific instructions for
-        # how it should behave throughout the conversation.
         {
             "role": "system",
             "content": "You are a helpful assistant."
         },
-        # Set a user message for the assistant to respond to.
         {
             "role": "user",
             "content": "Explain the importance of fast language models",
         }
     ],
 
-    # The language model which will generate the completion.
-    model="llama-3.3-70b-versatile"
+    model="gpt-5"
 )
 
-# Print the completion returned by the LLM.
 print(chat_completion.choices[0].message.content)
 ```
 
@@ -72,19 +66,15 @@ const client = new OpenAI({
 
 const chatCompletion = await client.chat.completions.create({
     messages: [
-        // Set an optional system message. 
         {
             role: "system",
             content: "You are a helpful assistant."
         },
-        // Set a user message for the assistant to respond to.
         {
             role: "user",
             content: "Explain the importance of fast language models",
         }
     ],
-
-    // The language model which will generate the completion.
     model: "gpt-5"
 });
 
@@ -110,11 +100,8 @@ client = OpenAI(
 )
 
 chat_completion = client.chat.completions.create(
-    #
     # Required parameters
-    #
     messages=[
-        # Set an optional system message. 
         {
             "role": "system",
             "content": "You are a helpful assistant."
@@ -129,20 +116,12 @@ chat_completion = client.chat.completions.create(
     # The language model which will generate the completion.
     model="gpt-5",
 
-    #
     # Optional parameters
-    #
 
-    # Controls randomness: lowering results in less random completions.
     temperature=0.5,
-
-    # The maximum number of tokens to generate. Requests can use up to
     max_completion_tokens=1024,
-
     top_p=1,
-
     stop=", 6",
-
     stream=False,
 )
 
@@ -159,11 +138,8 @@ const client = new OpenAI({
 });
 
 const chatCompletion = await client.chat.completions.create({
-    //
     // Required parameters
-    //
     messages: [
-        // Set an optional system message.
         {
             role: "system",
             content: "You are a helpful assistant."
@@ -178,18 +154,12 @@ const chatCompletion = await client.chat.completions.create({
     // The language model which will generate the completion.
     model: "gpt-5",
 
-    //
     // Optional parameters
-    //
 
     temperature: 0.5,
-
     max_completion_tokens: 1024,
-
     top_p: 1,
-
     stop: ", 6",
-
     stream: false,
 });
 
@@ -218,9 +188,7 @@ async def main():
     )
 
     chat_completion = await client.chat.completions.create(
-        #
         # Required parameters
-        #
         messages=[
             {
                 "role": "system",
@@ -232,19 +200,13 @@ async def main():
                 "content": "Explain the importance of fast language models",
             }
         ],
-
         model="gpt-5",
 
         # Optional parameters
-
         temperature=0.5,
-
         max_completion_tokens=1024,
-
         top_p=1,
-     
         stop=None,
-
         stream=False,
     )
 
@@ -264,9 +226,7 @@ const client = new OpenAI({
 
 async function main() {
     const chatCompletion = await client.chat.completions.create({
-        //
         // Required parameters
-        //
         messages: [
             {
                 role: "system",
@@ -277,19 +237,13 @@ async function main() {
                 content: "Explain the importance of fast language models",
             }
         ],
-
         model: "gpt-5",
 
         // Optional parameters
-
         temperature: 0.5,
-
         max_completion_tokens: 1024,
-
         top_p: 1,
-
         stop: null,
-
         stream: false,
     });
 
