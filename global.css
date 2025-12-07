@@ -5,7 +5,7 @@ html {
     position: relative;
 }
 
-/* Primary centered light effect - subtle glow */
+/* Primary centered light effect - true center */
 html::before {
     content: '';
     position: fixed;
@@ -15,7 +15,7 @@ html::before {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse 600px 600px at 50% 40%,
+    background: radial-gradient(ellipse 600px 600px at 50% 50%,
             rgba(65, 143, 222, 0.06) 0%,
             rgba(65, 143, 222, 0.03) 30%,
             rgba(65, 143, 222, 0.01) 50%,
@@ -35,7 +35,7 @@ html::after {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse 1000px 800px at 50% 35%,
+    background: radial-gradient(ellipse 1000px 800px at 50% 50%,
             rgba(65, 143, 222, 0.02) 0%,
             rgba(120, 180, 240, 0.01) 40%,
             transparent 60%);
@@ -60,7 +60,7 @@ html::after {
 .dark html::before,
 [data-theme="dark"] html::before,
 html.dark::before {
-    background: radial-gradient(ellipse 600px 600px at 50% 40%,
+    background: radial-gradient(ellipse 600px 600px at 50% 50%,
             rgba(65, 143, 222, 0.08) 0%,
             rgba(65, 143, 222, 0.04) 30%,
             rgba(65, 143, 222, 0.015) 50%,
@@ -70,7 +70,7 @@ html.dark::before {
 .dark html::after,
 [data-theme="dark"] html::after,
 html.dark::after {
-    background: radial-gradient(ellipse 1000px 800px at 50% 35%,
+    background: radial-gradient(ellipse 1000px 800px at 50% 50%,
             rgba(65, 143, 222, 0.03) 0%,
             rgba(120, 180, 240, 0.015) 40%,
             transparent 60%);
@@ -78,7 +78,7 @@ html.dark::after {
 
 @media (prefers-color-scheme: dark) {
     html::before {
-        background: radial-gradient(ellipse 600px 600px at 50% 40%,
+        background: radial-gradient(ellipse 600px 600px at 50% 50%,
                 rgba(65, 143, 222, 0.08) 0%,
                 rgba(65, 143, 222, 0.04) 30%,
                 rgba(65, 143, 222, 0.015) 50%,
@@ -86,7 +86,7 @@ html.dark::after {
     }
 
     html::after {
-        background: radial-gradient(ellipse 1000px 800px at 50% 35%,
+        background: radial-gradient(ellipse 1000px 800px at 50% 50%,
                 rgba(65, 143, 222, 0.03) 0%,
                 rgba(120, 180, 240, 0.015) 40%,
                 transparent 60%);
