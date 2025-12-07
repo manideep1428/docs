@@ -1,0 +1,232 @@
+---
+title: Node.js Setup
+sidebarTitle: "Node.js"
+description: Integrate Emby API with your Node.js application
+icon: node-js
+---
+
+Use Emby's OpenAI-compatible API in your Node.js application for AI-powered features.
+
+## Prerequisites
+
+- Node.js 18+ installed
+- An Emby account with an API key
+
+## Installation
+
+<Tabs>
+<Tab title="npm">
+```bash
+npm install openai
+```
+</Tab>
+<Tab title="pnpm">
+```bash
+pnpm add openai
+```
+</Tab>
+<Tab title="yarn">
+```bash
+yarn add openai
+```
+</Tab>
+</Tabs>
+
+## Quick Start
+
+<Steps>
+<Step>
+### Set Environment Variables
+
+Create a `.env` file in your project root:
+
+```env
+EMBY_API_KEY=your-api-key-here
+EMBY_BASE_URL=https://dev.emby.ai/v1
+```
+
+Install dotenv to load environment variables:
+
+```bash
+npm install dotenv
+```
+</Step>
+
+<Step>
+### Create the API Client
+
+```javascript
+// emby.js
+require('dotenv').config();
+const OpenAI = require('openai');
+
+const emby = new OpenAI({
+  apiKey: process.env.EMBY_API_KEY,
+  baseURL: process.env.EMBY_BASE_URL,
+});
+
+module.exports = emby;
+```
+
+Or with ES modules:
+
+```javascript
+// emby.mjs
+import 'dotenv/config';
+import OpenAI from 'openai';
+
+export const emby = new OpenAI({
+  apiKey: process.env.EMBY_API_KEY,
+  baseURL: process.env.EMBY_BASE_URL,
+});
+```
+</Step>
+
+<Step>
+### Make Your First Request
+
+```javascript
+// index.js
+const emby = require('./emby');
+
+async function main() {
+  const completion = await emby.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [
+      { role: 'user', content: 'Hello! What can you help me with?' }
+    ],
+  });
+
+  console.log(completion.choices[0].message.content);
+}
+
+main();
+```
+</Step>
+</Steps>
+
+## Streaming Responses
+
+For real-time output, use streaming:
+
+```javascript
+const emby = require('./emby');
+
+async function streamChat(prompt) {
+  const stream = await emby.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [{ role: 'user', content: prompt }],
+    stream: true,
+  });
+
+  for await (const chunk of stream) {
+    const content = chunk.choices[0]?.delta?.content || '';
+    process.stdout.write(content);
+  }
+  console.log(); // New line at the end
+}
+
+streamChat('Write a haiku about coding');
+```
+
+## Express.js Integration
+
+Integrate Emby with an Express server:
+
+```javascript
+const express = require('express');
+const emby = require('./emby');
+
+const app = express();
+app.use(express.json());
+
+app.post('/api/chat', async (req, res) => {
+  const { message } = req.body;
+
+  try {
+    const completion = await emby.chat.completions.create({
+      model: 'gpt-4o',
+      messages: [{ role: 'user', content: message }],
+    });
+
+    res.json({ reply: completion.choices[0].message.content });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+```
+
+### Streaming with Express
+
+```javascript
+app.post('/api/chat/stream', async (req, res) => {
+  const { message } = req.body;
+
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Transfer-Encoding', 'chunked');
+
+  try {
+    const stream = await emby.chat.completions.create({
+      model: 'gpt-4o',
+      messages: [{ role: 'user', content: message }],
+      stream: true,
+    });
+
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      res.write(content);
+    }
+    res.end();
+  } catch (error) {
+    res.status(500).end(error.message);
+  }
+});
+```
+
+## TypeScript Support
+
+The OpenAI SDK includes TypeScript types out of the box:
+
+```typescript
+// emby.ts
+import OpenAI from 'openai';
+
+export const emby = new OpenAI({
+  apiKey: process.env.EMBY_API_KEY,
+  baseURL: process.env.EMBY_BASE_URL,
+});
+
+// Type-safe usage
+import type { ChatCompletionMessageParam } from 'openai/resources/chat';
+
+const messages: ChatCompletionMessageParam[] = [
+  { role: 'system', content: 'You are a helpful assistant.' },
+  { role: 'user', content: 'Hello!' },
+];
+```
+
+## Available Models
+
+Use any [Emby supported model](https://dev.emby.ai/models):
+
+```javascript
+// Popular choices
+const model = 'gpt-4o';           // Fast and capable
+const model = 'gpt-5';            // Most powerful
+const model = 'claude-sonnet-4-5'; // Anthropic's latest
+```
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card target="_blank" href="https://wa.absolum.nl" title="WhatsApp Support" icon="phone">
+    Chat with us instantly
+  </Card>
+  <Card target="_blank" href="https://cal.com/absolum/30min" title="Book a Call" icon="calendar">
+    For enterprise support
+  </Card>
+</CardGroup>

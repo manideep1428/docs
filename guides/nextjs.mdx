@@ -1,0 +1,207 @@
+---
+title: Next.js Setup
+sidebarTitle: "Next.js"
+description: Integrate Emby API with your Next.js application
+icon: react
+---
+
+Use Emby's OpenAI-compatible API in your Next.js application for AI-powered features.
+
+## Prerequisites
+
+- Node.js 18+ installed
+- An Emby account with an API key
+- A Next.js project (or create one)
+
+## Installation
+
+<Tabs>
+<Tab title="npm">
+```bash
+npm install openai
+```
+</Tab>
+<Tab title="pnpm">
+```bash
+pnpm add openai
+```
+</Tab>
+<Tab title="yarn">
+```bash
+yarn add openai
+```
+</Tab>
+</Tabs>
+
+## Configuration
+
+<Steps>
+<Step>
+### Set Environment Variables
+
+Create or update your `.env.local` file:
+
+```env
+EMBY_API_KEY=your-api-key-here
+EMBY_BASE_URL=https://dev.emby.ai/v1
+```
+
+<Warning>
+Never commit your API key to version control. Add `.env.local` to your `.gitignore` file.
+</Warning>
+</Step>
+
+<Step>
+### Create the API Client
+
+Create a utility file to initialize the OpenAI client with Emby's endpoint:
+
+```typescript
+// lib/emby.ts
+import OpenAI from 'openai';
+
+export const emby = new OpenAI({
+  apiKey: process.env.EMBY_API_KEY,
+  baseURL: process.env.EMBY_BASE_URL,
+});
+```
+</Step>
+
+<Step>
+### Create an API Route
+
+Create a Next.js API route to handle AI requests:
+
+```typescript
+// app/api/chat/route.ts
+import { emby } from '@/lib/emby';
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(request: NextRequest) {
+  const { messages } = await request.json();
+
+  const completion = await emby.chat.completions.create({
+    model: 'gpt-4o',
+    messages,
+  });
+
+  return NextResponse.json(completion.choices[0].message);
+}
+```
+</Step>
+
+<Step>
+### Use Streaming (Recommended)
+
+For a better user experience, use streaming responses:
+
+```typescript
+// app/api/chat/route.ts
+import { emby } from '@/lib/emby';
+import { NextRequest } from 'next/server';
+
+export async function POST(request: NextRequest) {
+  const { messages } = await request.json();
+
+  const stream = await emby.chat.completions.create({
+    model: 'gpt-4o',
+    messages,
+    stream: true,
+  });
+
+  const encoder = new TextEncoder();
+  const readable = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of stream) {
+        const text = chunk.choices[0]?.delta?.content || '';
+        controller.enqueue(encoder.encode(text));
+      }
+      controller.close();
+    },
+  });
+
+  return new Response(readable, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
+}
+```
+</Step>
+</Steps>
+
+## Example Usage
+
+### Client Component
+
+```tsx
+// components/Chat.tsx
+'use client';
+
+import { useState } from 'react';
+
+export function Chat() {
+  const [input, setInput] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setResponse('');
+
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: input }],
+      }),
+    });
+
+    const reader = res.body?.getReader();
+    const decoder = new TextDecoder();
+
+    while (reader) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      setResponse((prev) => prev + decoder.decode(value));
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Ask something..."
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? 'Thinking...' : 'Send'}
+      </button>
+      {response && <p>{response}</p>}
+    </form>
+  );
+}
+```
+
+## Available Models
+
+Use any [Emby supported model](https://dev.emby.ai/models):
+
+```typescript
+// Popular choices
+const model = 'gpt-4o';           // Fast and capable
+const model = 'gpt-5';            // Most powerful
+const model = 'claude-sonnet-4-5'; // Anthropic's latest
+```
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card target="_blank" href="https://wa.absolum.nl" title="WhatsApp Support" icon="phone">
+    Chat with us instantly
+  </Card>
+  <Card target="_blank" href="https://cal.com/absolum/30min" title="Book a Call" icon="calendar">
+    For enterprise support
+  </Card>
+</CardGroup>

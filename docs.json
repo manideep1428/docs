@@ -12,9 +12,11 @@
     "tabs": [
       {
         "tab": "Overview",
+        "icon": "house",
         "groups": [
           {
             "group": "Quickstart",
+            "icon": "rocket",
             "pages": [
               "/index",
               "quickstart"
@@ -22,6 +24,7 @@
           },
           {
             "group": "Core Features",
+            "icon": "cube",
             "pages": [
               "core-features/setup",
               "core-features/models",
@@ -30,42 +33,71 @@
               "core-features/function-calling",
               "core-features/anthropic"
             ]
+          },
+          {
+            "group": "Guides",
+            "icon": "book-open",
+            "pages": [
+              "guides/nextjs",
+              "guides/nodejs",
+              "guides/fastapi-uv",
+              "guides/fastapi-pip"
+            ]
           }
         ]
       },
       {
         "tab": "Integrations",
+        "icon": "plug",
         "groups": [
           {
-            "group": "Integrations",
+            "group": "IDE Integrations",
+            "icon": "code",
             "pages": [
               "integrations/cursor",
               "integrations/kilo-code",
-              "integrations/n8n",
+              "integrations/cline",
               "integrations/roo-code",
-              "integrations/open-code",
-              "integrations/cline"
+              "integrations/open-code"
+            ]
+          },
+          {
+            "group": "Workflow Automation",
+            "icon": "diagram-project",
+            "pages": [
+              "integrations/n8n"
+            ]
+          },
+          {
+            "group": "Cloud Providers",
+            "icon": "cloud",
+            "pages": [
+              "integrations/aws-bedrock"
             ]
           }
         ]
       },
       {
         "tab": "API Reference",
+        "icon": "code",
         "groups": [
           {
             "group": "Overview",
+            "icon": "book",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
             "group": "Models",
+            "icon": "hexagon-nodes",
             "pages": [
               "api-reference/endpoint/models/get"
             ]
           },
           {
             "group": "Chat Completions",
+            "icon": "message",
             "pages": [
               "api-reference/endpoint/completions/get"
             ]
@@ -74,9 +106,11 @@
       },
       {
         "tab": "About",
+        "icon": "building",
         "groups": [
           {
             "group": "Company",
+            "icon": "users",
             "pages": [
               "about/meet-team",
               "about/security-compliance"
@@ -86,9 +120,11 @@
       },
       {
         "tab": "Legal",
+        "icon": "file-contract",
         "groups": [
           {
             "group": "Legal Documents",
+            "icon": "gavel",
             "pages": [
               "legal/terms-of-service",
               "legal/privacy-policy",
