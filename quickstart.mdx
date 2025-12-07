@@ -118,7 +118,7 @@ response = client.chat.completions.create(
 
 # Switch to Claude
 response = client.chat.completions.create(
-    model="claude-opus-4-1-20250805",
+    model="claude-opus-4-5-20250805",
     messages=[{"role": "user", "content": "Explain quantum computing"}]
 )
 
@@ -136,19 +136,19 @@ response = client.chat.completions.create(
 ## What's Next?
 
 <CardGroup cols={2}>
-  <Card title="Complete Setup" icon="screwdriver-wrench" href="/en/home/getting-started/setup">
+  <Card title="Complete Setup" icon="screwdriver-wrench" href="/core-features/setup">
     Environment variables and configuration
   </Card>
 
-  <Card title="First Request Tutorial" icon="brackets-curly" href="/en/home/getting-started/first-request">
+  <Card title="Text Generation" icon="brackets-curly" href="/core-features/text-generation">
     Detailed walkthrough with examples
   </Card>
 
-  <Card title="Browse Models" icon="grid-2-plus" href="/en/home/models">
+  <Card title="Browse Models" icon="grid-2-plus" href="/core-features/models">
     Explore all 70+ available models
   </Card>
 
-  <Card title="API Reference" icon="book-atlas" href="/en/api-reference/introduction">
+  <Card title="API Reference" icon="book-atlas" href="/api-reference/introduction">
     Complete API documentation
   </Card>
 </CardGroup>
