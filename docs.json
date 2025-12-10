@@ -66,6 +66,8 @@
           {
             "group": "Cloud Providers",
             "pages": [
+              "integrations/azure",
+              "integrations/google-vertex",
               "integrations/aws-bedrock"
             ]
           }
@@ -139,8 +141,8 @@
     }
   },
   "logo": {
-    "light": "/logo/2.png",
-    "dark": "/logo/1.png"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
   "navbar": {
     "links": [

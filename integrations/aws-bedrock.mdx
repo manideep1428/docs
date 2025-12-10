@@ -1,18 +1,18 @@
 ---
 title: AWS Bedrock Integration
 sidebarTitle: "AWS Bedrock"
-description: Connect AWS Bedrock to LLM Gateway for access to foundation models
+description: Connect AWS Bedrock to Emby for access to foundation models
 icon: cloud
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
 
-AWS Bedrock is Amazon's fully managed service that provides access to foundation models from leading AI companies. This guide shows how to create AWS Bedrock Long-Term API Keys and integrate them with LLM Gateway.
+AWS Bedrock is Amazon's fully managed service that provides access to foundation models from leading AI companies. This guide shows how to create AWS Bedrock Long-Term API Keys and integrate them with Emby.
 
 ## Prerequisites
 
 - An AWS account with Bedrock access enabled
-- LLM Gateway account (Pro plan required for provider keys) or self-hosted instance (free)
+- Emby account (Pro plan required for provider keys) or self-hosted instance (free)
 
 ## Overview
 
@@ -46,13 +46,13 @@ AWS Bedrock supports **Long-Term API Keys** for simplified authentication. These
 
 </Steps>
 
-## Add to LLM Gateway
+## Add to Emby
 
 <Steps>
 <Step>
 ### Navigate to Provider Keys
 
-1. Log into [LLM Gateway Dashboard](https://emby.ai/dashboard)
+1. Log into [Emby Dashboard](https://emby.ai/dashboard)
 2. Select your organization and project
 3. Go to **Provider Keys** in the sidebar
 
@@ -93,14 +93,14 @@ curl -X POST https:/dev.emby.ai/v1/chat/completions \
   }'
 ```
 
-Replace `EMBY_API_KEY` with your LLM Gateway API key.
+Replace `EMBY_API_KEY` with your Emby API key.
 
 </Step>
 </Steps>
 
 ## Available Models
 
-Once configured, you can access all AWS Bedrock models through LLM Gateway:
+Once configured, you can access all AWS Bedrock models through Emby:
 
 - **Anthropic Claude**: `aws-bedrock/claude-4-5-sonnet`, `aws-bedrock/claude--5-haiku`
 - **Meta Llama**: `aws-bedrock/llama-3-2-90b`, `aws-bedrock/llama-3-2-11b`
