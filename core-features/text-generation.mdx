@@ -1,0 +1,272 @@
+---
+title: "Text Generation"
+sidebarTitle: "Text Generation"
+hide-title: true
+icon : comment
+---
+
+For details about all available parameters, [visit the API reference page.](https://dev.emby.ai/docs/api-reference#chat-create)
+
+## [Getting Started with OpenAI SDK](#getting-started-with-openai-sdk)
+
+To start using Emby's Chat Completions API, you'll need to install the OpenAI SDK and set up your API key with the environment variable `EMBY_API_KEY`.
+
+<CodeGroup>
+
+```bash Python
+pip install openai
+```
+
+```bash JavaScript
+npm install openai
+```
+
+</CodeGroup>
+
+## [Performing a Basic Chat Completion](#performing-a-basic-chat-completion)
+
+The simplest way to use the Chat Completions API is to send a list of messages and receive a single response. Messages are provided in chronological order, with each message containing a role ("system", "user", or "assistant") and content.
+
+<CodeGroup>
+
+```python Python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("EMBY_API_KEY"),
+    base_url="https://dev.emby.ai/v1"
+)
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a helpful assistant."
+        },
+        {
+            "role": "user",
+            "content": "Explain the importance of fast language models",
+        }
+    ],
+
+    model="gpt-5"
+)
+
+print(chat_completion.choices[0].message.content)
+```
+
+```javascript JavaScript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+    apiKey: process.env.EMBY_API_KEY,
+    baseURL: "https://dev.emby.ai/v1"
+});
+
+const chatCompletion = await client.chat.completions.create({
+    messages: [
+        {
+            role: "system",
+            content: "You are a helpful assistant."
+        },
+        {
+            role: "user",
+            content: "Explain the importance of fast language models",
+        }
+    ],
+    model: "gpt-5"
+});
+
+// Print the completion returned by the LLM.
+console.log(chatCompletion.choices[0].message.content);
+```
+
+</CodeGroup>
+
+## [Performing a Chat Completion with a Stop Sequence](#performing-a-chat-completion-with-a-stop-sequence)
+
+Stop sequences allow you to control where the model should stop generating. When the model encounters any of the specified stop sequences, it will halt generation at that point. This is useful when you need responses to end at specific points.
+
+<CodeGroup>
+
+```python Python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("EMBY_API_KEY"),
+    base_url="https://dev.emby.ai/v1"
+)
+
+chat_completion = client.chat.completions.create(
+    # Required parameters
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a helpful assistant."
+        },
+        # Set a user message for the assistant to respond to.
+        {
+            "role": "user",
+            "content": "Count to 10.  Your response must begin with \"1, \".  example: 1, 2, 3, ...",
+        }
+    ],
+
+    # The language model which will generate the completion.
+    model="gpt-5",
+
+    # Optional parameters
+
+    temperature=0.5,
+    max_completion_tokens=1024,
+    top_p=1,
+    stop=", 6",
+    stream=False,
+)
+
+# Print the completion returned by the LLM.
+print(chat_completion.choices[0].message.content)
+```
+
+```javascript JavaScript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+    apiKey: process.env.EMBY_API_KEY,
+    baseURL: "https://dev.emby.ai/v1"
+});
+
+const chatCompletion = await client.chat.completions.create({
+    // Required parameters
+    messages: [
+        {
+            role: "system",
+            content: "You are a helpful assistant."
+        },
+        // Set a user message for the assistant to respond to.
+        {
+            role: "user",
+            content: "Count to 10.  Your response must begin with \"1, \".  example: 1, 2, 3, ...",
+        }
+    ],
+
+    // The language model which will generate the completion.
+    model: "gpt-5",
+
+    // Optional parameters
+
+    temperature: 0.5,
+    max_completion_tokens: 1024,
+    top_p: 1,
+    stop: ", 6",
+    stream: false,
+});
+
+// Print the completion returned by the LLM.
+console.log(chatCompletion.choices[0].message.content);
+```
+
+</CodeGroup>
+
+## [Performing an Async Chat Completion](#performing-an-async-chat-completion)
+
+For applications that need to maintain responsiveness while waiting for completions, you can use the asynchronous client. This lets you make non-blocking API calls using Python's asyncio framework.
+
+<CodeGroup>
+
+```python Python
+import asyncio
+import os
+from openai import AsyncOpenAI
+
+
+async def main():
+    client = AsyncOpenAI(
+        api_key=os.environ.get("EMBY_API_KEY"),
+        base_url="https://dev.emby.ai/v1"
+    )
+
+    chat_completion = await client.chat.completions.create(
+        # Required parameters
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant."
+            },
+            # Set a user message for the assistant to respond to.
+            {
+                "role": "user",
+                "content": "Explain the importance of fast language models",
+            }
+        ],
+        model="gpt-5",
+
+        # Optional parameters
+        temperature=0.5,
+        max_completion_tokens=1024,
+        top_p=1,
+        stop=None,
+        stream=False,
+    )
+
+    # Print the completion returned by the LLM.
+    print(chat_completion.choices[0].message.content)
+
+asyncio.run(main())
+```
+
+```javascript JavaScript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+    apiKey: process.env.EMBY_API_KEY,
+    baseURL: "https://dev.emby.ai/v1"
+});
+
+async function main() {
+    const chatCompletion = await client.chat.completions.create({
+        // Required parameters
+        messages: [
+            {
+                role: "system",
+                content: "You are a helpful assistant."
+            },
+            {
+                role: "user",
+                content: "Explain the importance of fast language models",
+            }
+        ],
+        model: "gpt-5",
+
+        // Optional parameters
+        temperature: 0.5,
+        max_completion_tokens: 1024,
+        top_p: 1,
+        stop: null,
+        stream: false,
+    });
+
+    // Print the completion returned by the LLM.
+    console.log(chatCompletion.choices[0].message.content);
+}
+
+main();
+```
+
+</CodeGroup>
+
+## [Structured Outputs and JSON](#structured-outputs-and-json)
+
+Need reliable, type-safe JSON responses that match your exact schema? Emby's Structured Outputs feature is designed so that model responses strictly conform to your JSON Schema without validation or retry logic.
+
+  
+For complete guides on implementing structured outputs with JSON Schema or using JSON Object Mode, see our [structured outputs documentation](https://dev.emby.ai/docs/structured-outputs).
+
+  
+Key capabilities:
+
+* **JSON Schema enforcement**: Responses match your schema exactly
+* **Type-safe outputs**: No validation or retry logic needed
+* **Programmatic refusal detection**: Handle safety-based refusals programmatically
+* **JSON Object Mode**: Basic JSON output with prompt-guided structure

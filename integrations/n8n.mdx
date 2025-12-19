@@ -1,0 +1,122 @@
+---
+title: n8n Integration
+sidebarTitle: "n8n"
+icon: diagram-project
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+
+n8n is a powerful workflow automation tool that enables you to automate tasks and connect different services together. By integrating Emby with n8n, you can leverage AI capabilities in your automated workflows.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- An [Emby API key](https://dev.emby.ai/keys)
+- Access to an n8n instance (self-hosted or cloud)
+- Basic familiarity with creating n8n workflows
+
+## Integration Guide
+
+Emby can be seamlessly integrated into n8n using the OpenAI node with custom configuration. Follow the steps below to set up the integration.
+
+<Steps>
+
+<Step>
+### Create OpenAI Credentials
+
+First, you need to create credentials for connecting to Emby's API.
+
+<img src="/assets/guides/n8n/1.png" alt="n8n Credentials Menu" />
+
+1. In your n8n instance, navigate to **Settings** → **Credentials**
+2. Click on **Add Credential** to create a new credential
+
+<img src="/assets/guides/n8n/2.png" alt="Select OpenAI Credential Type" />
+
+3. Search for and select **OpenAI** from the list of available credentials
+
+</Step>
+
+<Step>
+### Configure Emby Connection
+
+Now you'll configure the OpenAI credential to point to Emby's API endpoint.
+
+<img src="/assets/guides/n8n/3.png" alt="Configure Credential Settings" />
+
+Fill in the following fields:
+
+- **Credential Name**: Give it a descriptive name like "Emby AI"
+- **API Key**: Paste your [Emby API key](https://dev.emby.ai/keys)
+- **Base URL**: Enter `https://dev.emby.ai/v1`
+- **Organization ID**: Leave this field blank
+
+<img src="/assets/guides/n8n/4.png" alt="Final Credential Configuration" />
+
+Click **Save** to store your credentials.
+
+</Step>
+
+<Step>
+### Use Emby in Your Workflow
+
+Now you can add AI capabilities to your n8n workflows using Emby.
+
+1. Create a new workflow or open an existing one
+2. Add an **OpenAI Chat Model** node or **AI Agent** node to your workflow
+3. Select the Emby credentials you just created
+4. Choose a model from [Emby's model catalog](https://dev.emby.ai/models)
+
+<Callout type="info">
+  **Popular models to try:** - `gpt-5` - OpenAI's GPT-5 model -
+  `claude-4.5-sonnet` - Anthropic's Claude 4.5 Sonnet - `gemini-3.0-flash` -
+  Google's Gemini 3.0 Flash
+</Callout>
+
+<Callout type="warning">
+  **Important:** If you're using the OpenAI node, make sure to disable the "Use
+  Responses API" option, as Emby does not currently support this feature.
+</Callout>
+
+5. Configure additional parameters as needed (temperature, max tokens, etc.)
+6. Connect the node to your workflow logic
+
+</Step>
+
+<Step>
+### Test the Integration
+
+Test your workflow to ensure everything is working correctly.
+
+1. Add a test input to your workflow (e.g., a manual trigger with a sample prompt)
+2. Execute the workflow
+3. Verify that you receive responses from the Emby AI model
+4. Check the execution logs if you encounter any issues
+
+<Callout type="success">
+  **Success!** You've successfully integrated Emby with n8n. You can now build
+  powerful AI-driven automation workflows.
+</Callout>
+
+</Step>
+
+</Steps>
+
+## Next Steps
+
+Now that you have Emby integrated with n8n, you can:
+
+- Explore different [AI models available through Emby](core-features/models)
+- Build complex workflows combining AI with other services
+- Use AI agents for multi-step reasoning and task completion
+- Check out [n8n's AI documentation](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent/) for advanced use cases
+
+## Support
+
+If you encounter any issues or have questions:
+
+- Check the [Emby documentation](https://docs.emby.ai)
+- Visit the [n8n community forum](https://community.n8n.io)
+- Contact Emby support through the [Discord community](https://discord.gg/emby)

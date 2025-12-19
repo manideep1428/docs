@@ -1,0 +1,260 @@
+---
+title: Cursor Integration
+sidebarTitle: "Cursor"
+icon: terminal
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Card, CardGroup } from "fumadocs-ui/components/card";
+
+Cursor is an AI-powered code editor built on VSCode. By integrating Emby with Cursor, you gain access to multiple AI models, better cost control, and enhanced capabilities for your development workflow.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- An [Emby API key](https://dev.emby.ai/api-reference/authentication)
+- [Cursor IDE](https://cursor.sh) installed
+- Basic familiarity with Cursor's AI features
+
+## Integration Guide
+
+Cursor supports OpenAI-compatible API endpoints, making it easy to integrate with Emby.
+
+<Steps>
+
+<Step>
+### Get Your Emby API Key
+
+First, you'll need to obtain your Emby API key.
+
+1. Log in to your [Emby dashboard](https://dev.emby.ai/home)
+2. Navigate to the **API Keys** section
+3. Create a new API key and copy it for later use
+
+</Step>
+
+<Step>
+### Configure Cursor Settings
+
+Now let's configure Cursor to use Emby as your AI provider.
+
+<img src="/assets/guides/cursor/2.png" alt="Cursor Settings Menu" />
+
+1. Open Cursor and press `Cmd/Ctrl + ,` to open **Settings**
+2. Search for "Cursor Settings" or click on the Cursor tab
+3. Click on **Models** in the sidebar
+
+</Step>
+
+<Step>
+### Add Your API Key
+
+<img src="/assets/guides/cursor/3.png" alt="Add OpenAI API Key" />
+
+1. In the Models section, scroll down to the **OpenAI API Key** section
+2. Click on **Add OpenAI API Key**
+3. Enter your Emby API key in the input field
+4. Click **Save**
+
+</Step>
+
+<Step>
+### Configure Base URL
+
+<img src="/assets/guides/cursor/4.png" alt="Override Base URL" />
+
+1. In the same **Models** settings page, find the **Override OpenAI Base URL** option
+2. Enable the toggle for **Override OpenAI Base URL**
+3. Enter Emby's API endpoint: `https://dev.emby.ai/v1`
+4. Click **Save**
+
+</Step>
+
+<Step>
+### Select Your Models
+
+Now you can select which models to use for different features.
+
+1. In the **Models** section, you'll see options for:
+   - **Chat Model** - for AI conversations (Cmd/Ctrl + L)
+   - **Autocomplete Model** - for code suggestions as you type
+2. Choose any [Emby supported model](https://dev.emby.ai/models):
+
+**Popular model options:**
+
+- `gpt-5` - OpenAI's GPT-5 (balanced performance)
+- `claude-4.5-sonnet` - Anthropic's Claude 3.5 Sonnet (excellent for coding)
+- `gemini-3.0-flash` - Google's Gemini 3.0 Flash (fast responses)
+- `gpt-5-mini` - Cost-effective for autocomplete
+
+**Advanced model formats:**
+
+- Provider-specific: `openai/gpt-5`, `anthropic/claude-4.5-sonnet`
+- Discounted models: Check the [discounted models page](https://dev.emby.ai/models?view=grid&filters=1&discounted=true)
+- Free models: Check the [free models page](https://dev.emby.ai/models?view=grid&filters=1&free=true)
+- Reasoning models: Check the [reasoning models page](https://dev.emby.ai/models?view=grid&filters=1&reasoning=true)
+
+<Callout type="info">
+  **Tip:** Use a powerful model like `claude-4.5-sonnet` for chat, and a faster,
+  cheaper model like `gpt-5-mini` for autocomplete to optimize cost and
+  performance.
+</Callout>
+
+</Step>
+
+<Step>
+### Test the Integration
+
+Verify that everything is working correctly.
+
+1. Open any code file in Cursor
+2. Try the AI chat by pressing `Cmd/Ctrl + L`
+3. Ask a question like "Explain this code"
+4. Test autocomplete by starting to write code
+
+<Callout type="success">
+  **Success!** All AI requests are now routed through Emby. You can monitor
+  usage and costs in your [Emby dashboard](https://dev.emby.ai/home).
+</Callout>
+
+</Step>
+
+</Steps>
+
+## Features
+
+Once configured, you can use all of Cursor's AI features powered by Emby:
+
+### AI Chat (Cmd/Ctrl + L)
+
+Open an AI-powered chat panel to:
+
+- Ask questions about your codebase
+- Request code explanations and documentation
+- Get debugging help and suggestions
+- Generate new code snippets
+
+### Inline Edit (Cmd/Ctrl + K)
+
+Edit code directly with natural language:
+
+- Refactor functions and classes
+- Add new features to existing code
+- Fix bugs with AI suggestions
+- Optimize and improve code quality
+
+### Autocomplete
+
+Get intelligent code suggestions as you type:
+
+- Context-aware completions based on your codebase
+- Multi-line code predictions
+- Smart imports and function signatures
+- Adaptive learning from your coding patterns
+
+## Advanced Configuration
+
+### Using Different Models for Different Features
+
+Optimize your workflow by using different models for different tasks:
+
+| Feature          | Recommended Model               | Why                                               |
+| ---------------- | ------------------------------- | ------------------------------------------------- |
+| **Chat**         | `claude-3.5-sonnet` or `gpt-4o` | Best for complex reasoning and explanations       |
+| **Autocomplete** | `gpt-4o-mini`                   | Fast and cost-effective for real-time suggestions |
+| **Code Review**  | `gpt-4o`                        | Thorough analysis and suggestions                 |
+
+### Model Routing
+
+Emby's [intelligent routing](/features/routing) automatically:
+
+- **Chooses cost-effective models** by default for optimal price-to-performance
+- **Scales to more powerful models** based on your request's complexity
+- **Handles large contexts intelligently** by selecting models with appropriate context windows
+- **Falls back to alternatives** if a model is unavailable
+
+## Troubleshooting
+
+### Authentication Errors
+
+If you encounter authentication issues:
+
+- Verify your API key is correct and active
+- Ensure the base URL is set to `https://dev.emby.ai/v1`
+- Check your Emby account has sufficient credits in the [dashboard](https://dev.emby.ai/home)
+- Try removing and re-adding the API key in Cursor settings
+
+### Model Not Found
+
+If you see "model not found" errors:
+
+- Verify the model ID exists in the [models catalog](https://dev.emby.ai/models)
+- Check you're using the correct model name format
+- Some provider-specific models may require additional configuration
+- Try using a standard model name like `gpt-4o` or `claude-3.5-sonnet`
+
+### Slow Responses
+
+If responses are slower than expected:
+
+- Check your internet connection speed
+- Monitor your usage in the [Emby dashboard](https://dev.emby.ai/home)
+- Consider using faster models like `gpt-4o-mini` for autocomplete
+- Reduce context size by limiting the number of files Cursor analyzes
+
+## Benefits of Using Emby with Cursor
+
+### Multi-Provider Access
+
+Access models from OpenAI, Anthropic, Google, Meta, and more through a single API.
+
+### Cost Control
+
+Track and limit your AI spending with detailed usage analytics and budget controls.
+
+### Response Caching
+
+Reduce costs by up to 90% with intelligent caching of similar requests.
+
+### Analytics Dashboard
+
+Monitor usage patterns, costs per model, and optimize your AI spend.
+
+### Automatic Fallbacks
+
+If one provider is down, Emby automatically routes to alternatives.
+
+### Smart Routing
+
+Let Emby choose the best model for each task based on cost and performance.
+
+## Next Steps
+
+Now that you have Cursor integrated with Emby:
+
+- Explore the [full model catalog](https://dev.emby.ai/models)
+- Set up [usage limits and budgets](https://dev.emby.ai/usage)
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card
+    target="_blank"
+    href="https://wa.absolum.nl"
+    title="WhatsApp Support"
+    icon="phone"
+  >
+    Chat with us instantly for quick questions
+  </Card>
+  <Card
+    target="_blank"
+    href="https://cal.com/absolum/30min"
+    title="Book a Call"
+    icon="calendar"
+  >
+    Schedule a call for enterprise routing, custom GPU servers, or migration
+    assistance
+  </Card>
+</CardGroup>

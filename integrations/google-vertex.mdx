@@ -1,0 +1,215 @@
+---
+title: Google Vertex AI Integration
+sidebarTitle: "Google Vertex AI"
+icon: cloud
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+Google Vertex AI is Google Cloud's fully managed AI platform that provides access to Gemini and other foundation models. This guide shows how to set up Google Vertex AI and integrate it with Emby.
+
+## Prerequisites
+
+- A Google Cloud account with billing enabled
+- Emby account (Pro plan required for provider keys) or self-hosted instance (free)
+
+## Overview
+
+Google Vertex AI provides access to Google's latest AI models including Gemini Pro, Gemini Flash, and other foundation models with enterprise-grade security and scalability. Emby integrates seamlessly with Vertex AI deployments.
+
+## Create Google Cloud Project & Enable Vertex AI
+
+<Steps>
+<Step>
+### Create or Select a Google Cloud Project
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com)
+2. Click on the project dropdown at the top of the page
+3. Click **New Project** or select an existing project
+4. If creating new:
+   - Enter a **Project name**
+   - Select a **Billing account**
+   - Click **Create**
+
+</Step>
+
+<Step>
+### Enable Vertex AI API
+
+1. In the Google Cloud Console, navigate to **APIs & Services** > **Library**
+2. Search for **Vertex AI API**
+3. Click on **Vertex AI API**
+4. Click **Enable**
+5. Wait for the API to be enabled (usually takes a few seconds)
+
+</Step>
+
+<Step>
+### Create Service Account
+
+1. Navigate to **IAM & Admin** > **Service Accounts**
+2. Click **Create Service Account**
+3. Configure the service account:
+   - **Service account name**: Enter a name (e.g., `emby-vertex-ai`)
+   - **Service account ID**: Auto-generated
+   - **Description**: Optional description
+4. Click **Create and Continue**
+5. Grant the following role:
+   - **Vertex AI User** (roles/aiplatform.user)
+6. Click **Continue**, then **Done**
+
+</Step>
+
+<Step>
+### Generate API Key (Service Account Key)
+
+1. In the **Service Accounts** list, find your newly created service account
+2. Click on the service account email
+3. Go to the **Keys** tab
+4. Click **Add Key** > **Create new key**
+5. Select **JSON** as the key type
+6. Click **Create**
+7. **Important**: The JSON key file will be downloaded automatically - keep it secure!
+
+The JSON file contains your credentials and looks like this:
+
+```json
+{
+  "type": "service_account",
+  "project_id": "your-project-id",
+  "private_key_id": "...",
+  "private_key": "...",
+  "client_email": "...",
+  ...
+}
+```
+
+</Step>
+
+<Step>
+### Note Your Project ID
+
+You'll need your Google Cloud Project ID for the integration. You can find it:
+
+- In the downloaded JSON key file (`project_id` field)
+- In the Google Cloud Console header
+- On the project dashboard
+
+</Step>
+
+</Steps>
+
+## Add to Emby
+
+<Steps>
+<Step>
+### Navigate to Provider Keys
+
+1. Log into [Emby Dashboard](https://dev.emby.ai/home)
+2. Select your organization and project
+3. Go to **Provider Keys** in the sidebar
+
+</Step>
+
+<Step>
+### Add Google Vertex AI Provider Key
+
+1. Click **Add** for **Google Vertex AI**
+2. Enter your **Project ID** from Google Cloud
+3. Upload or paste the contents of your **Service Account JSON key file**
+4. Select your preferred **Region** (e.g., `us-central1`, `europe-west1`, `asia-southeast1`)
+5. Click **Add Key**
+
+The system will validate your credentials and confirm the connection.
+
+</Step>
+
+<Step>
+### Test the Integration
+
+Test your integration with a simple API call:
+
+```bash
+curl -X POST https://dev.emby.ai/v1/chat/completions \
+  -H "Authorization: Bearer EMBY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "vertex/gemini-3.0-flash",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello from Google Vertex AI!"
+      }
+    ]
+  }'
+```
+
+Replace `EMBY_API_KEY` with your Emby API key.
+
+</Step>
+</Steps>
+
+## Available Models
+
+Once configured, you can access Google Vertex AI models through Emby:
+
+- **Gemini 3.0 Flash**: `vertex/gemini-3.0-flash`
+- **Gemini 3.0**: `vertex/gemini-3.0`
+- **Gemini 2.0 Flash**: `vertex/gemini-2.0-flash-exp`
+
+**Note**: Model availability may vary by region. Check the [Google Cloud documentation](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models) for the latest model availability.
+
+Browse all available models at [emby.ai/models](https://emby.ai/models?provider=vertex)
+
+## Troubleshooting
+
+### "Permission denied" error
+
+- Verify your service account has the **Vertex AI User** role
+- Check that the Vertex AI API is enabled in your project
+- Ensure your service account key is valid and not expired
+
+### "Project not found" error
+
+- Verify the project ID is correct
+- Ensure billing is enabled for your Google Cloud project
+- Check that you have access to the project
+
+### "Model not available" error
+
+- Verify the model is available in your selected region
+- Some models may require allowlist access
+- Check [model availability by region](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models)
+
+### Rate limiting
+
+- Google Vertex AI has quota limits per project and region
+- Monitor usage in the Google Cloud Console under **Vertex AI** > **Quotas**
+- Request quota increases through the Google Cloud Console if needed
+
+### Region availability
+
+- Not all models are available in all regions
+- Check [Vertex AI locations](https://cloud.google.com/vertex-ai/docs/general/locations) for model availability
+- Consider using multiple regions for better availability
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card
+    target="_blank"
+    href="https://wa.absolum.nl"
+    title="WhatsApp Support"
+    icon="phone"
+  >
+    Chat with us instantly:
+  </Card>
+  <Card
+    target="_blank"
+    href="https://cal.com/absolum/30min"
+    title="Book a Call"
+    icon="calendar"
+  >
+    For enterprise routing, custom GPU servers or migration assistance:
+  </Card>
+</CardGroup>

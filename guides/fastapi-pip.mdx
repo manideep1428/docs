@@ -1,0 +1,267 @@
+---
+title: FastAPI Setup (pip)
+sidebarTitle: "FastAPI (pip)"
+description: Integrate Emby API with FastAPI using pip
+icon: python
+---
+
+Use Emby's OpenAI-compatible API with FastAPI using the traditional **pip** package manager.
+
+## Prerequisites
+
+- Python 3.9+ installed
+- An Emby account with an API key
+
+## Installation
+
+<Steps>
+<Step>
+### Create Project Directory
+
+```bash
+mkdir emby-fastapi && cd emby-fastapi
+```
+</Step>
+
+<Step>
+### Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment:
+
+<Tabs>
+<Tab title="macOS/Linux">
+```bash
+source venv/bin/activate
+```
+</Tab>
+<Tab title="Windows">
+```powershell
+.\venv\Scripts\activate
+```
+</Tab>
+</Tabs>
+</Step>
+
+<Step>
+### Install Dependencies
+
+```bash
+pip install fastapi uvicorn openai python-dotenv
+```
+
+Save dependencies to a file:
+
+```bash
+pip freeze > requirements.txt
+```
+</Step>
+
+<Step>
+### Set Environment Variables
+
+Create a `.env` file:
+
+```env
+EMBY_API_KEY=your-api-key-here
+EMBY_BASE_URL=https://dev.emby.ai/v1
+```
+</Step>
+</Steps>
+
+## Create the Application
+
+<Steps>
+<Step>
+### Create the Emby Client
+
+```python
+# emby_client.py
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+
+emby = OpenAI(
+    api_key=os.getenv("EMBY_API_KEY"),
+    base_url=os.getenv("EMBY_BASE_URL"),
+)
+```
+</Step>
+
+<Step>
+### Create the FastAPI App
+
+```python
+# main.py
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
+from emby_client import emby
+
+app = FastAPI(title="Emby FastAPI")
+
+class ChatRequest(BaseModel):
+    message: str
+    model: str = "gpt-4o"
+
+class ChatResponse(BaseModel):
+    reply: str
+
+@app.post("/chat", response_model=ChatResponse)
+async def chat(request: ChatRequest):
+    try:
+        completion = emby.chat.completions.create(
+            model=request.model,
+            messages=[{"role": "user", "content": request.message}],
+        )
+        return ChatResponse(reply=completion.choices[0].message.content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/chat/stream")
+async def chat_stream(request: ChatRequest):
+    async def generate():
+        stream = emby.chat.completions.create(
+            model=request.model,
+            messages=[{"role": "user", "content": request.message}],
+            stream=True,
+        )
+        for chunk in stream:
+            content = chunk.choices[0].delta.content
+            if content:
+                yield content
+
+    return StreamingResponse(generate(), media_type="text/plain")
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
+```
+</Step>
+
+<Step>
+### Run the Server
+
+```bash
+uvicorn main:app --reload
+```
+
+Your API is now running at `http://localhost:8000`
+
+Test it with:
+
+```bash
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello!"}'
+```
+</Step>
+</Steps>
+
+## Project Structure
+
+```
+emby-fastapi/
+├── .env
+├── venv/
+├── requirements.txt
+├── emby_client.py
+└── main.py
+```
+
+## requirements.txt
+
+Your `requirements.txt` should look like:
+
+```txt
+fastapi>=0.104.0
+uvicorn>=0.24.0
+openai>=1.0.0
+python-dotenv>=1.0.0
+```
+
+Install from requirements:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Advanced: Async Client
+
+For better performance with FastAPI's async nature:
+
+```python
+# emby_client.py
+import os
+from dotenv import load_dotenv
+from openai import AsyncOpenAI
+
+load_dotenv()
+
+emby = AsyncOpenAI(
+    api_key=os.getenv("EMBY_API_KEY"),
+    base_url=os.getenv("EMBY_BASE_URL"),
+)
+```
+
+```python
+# main.py (async version)
+@app.post("/chat", response_model=ChatResponse)
+async def chat(request: ChatRequest):
+    completion = await emby.chat.completions.create(
+        model=request.model,
+        messages=[{"role": "user", "content": request.message}],
+    )
+    return ChatResponse(reply=completion.choices[0].message.content)
+```
+
+## Docker Deployment
+
+Create a `Dockerfile`:
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+Build and run:
+
+```bash
+docker build -t emby-fastapi .
+docker run -p 8000:8000 --env-file .env emby-fastapi
+```
+
+## Available Models
+
+Use any [Emby supported model](https://dev.emby.ai/models):
+
+```python
+# Popular choices
+model = "gpt-4o"           # Fast and capable
+model = "gpt-5"            # Most powerful
+model = "claude-sonnet-4-5" # Anthropic's latest
+```
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card target="_blank" href="https://wa.absolum.nl" title="WhatsApp Support" icon="phone">
+    Chat with us instantly
+  </Card>
+  <Card target="_blank" href="https://cal.com/absolum/30min" title="Book a Call" icon="calendar">
+    For enterprise support
+  </Card>
+</CardGroup>

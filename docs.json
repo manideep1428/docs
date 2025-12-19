@@ -1,0 +1,179 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Mint Starter Kit",
+  "colors": {
+    "primary": "#418fde",
+    "light": "#418fde",
+    "dark": "#418fde"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "icon": "house",
+        "groups": [
+          {
+            "group": "Quickstart",
+            "pages": [
+              "/index",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "core-features/setup",
+              "core-features/models",
+              "core-features/text-generation",
+              "core-features/streaming",
+              "core-features/function-calling",
+              "core-features/anthropic"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/nextjs",
+              "guides/nodejs",
+              "guides/fastapi-uv",
+              "guides/fastapi-pip"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Integrations",
+        "icon": "plug",
+        "groups": [
+          {
+            "group": "IDE Integrations",
+            "pages": [
+              "integrations/cursor",
+              "integrations/kilo-code",
+              "integrations/cline",
+              "integrations/roo-code",
+              "integrations/open-code"
+            ]
+          },
+          {
+            "group": "Workflow Automation",
+            "pages": [
+              "integrations/n8n"
+            ]
+          },
+          {
+            "group": "Cloud Providers",
+            "pages": [
+              "integrations/azure",
+              "integrations/google-vertex",
+              "integrations/aws-bedrock"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "icon": "code",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Models",
+            "pages": [
+              "api-reference/endpoint/models/get"
+            ]
+          },
+          {
+            "group": "Chat Completions",
+            "pages": [
+              "api-reference/endpoint/completions/get"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "About",
+        "icon": "building",
+        "groups": [
+          {
+            "group": "Company",
+            "pages": [
+              "about/meet-team",
+              "about/security-compliance"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Legal",
+        "icon": "file-contract",
+        "groups": [
+          {
+            "group": "Legal Documents",
+            "pages": [
+              "legal/terms-of-service",
+              "legal/privacy-policy",
+              "legal/acceptable-use"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Discord",
+          "href": "https://discord.gg/Emby",
+          "icon": "discord"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://emby.io/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:hi@mintlify.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://dev.emby.ai"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/mintlify",
+      "github": "https://github.com/mintlify",
+      "linkedin": "https://linkedin.com/company/mintlify"
+    }
+  }
+}

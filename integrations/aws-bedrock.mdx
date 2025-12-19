@@ -1,0 +1,121 @@
+---
+title: AWS Bedrock Integration
+sidebarTitle: "AWS Bedrock"
+icon: cloud
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+AWS Bedrock is Amazon's fully managed service that provides access to foundation models from leading AI companies. This guide shows how to create AWS Bedrock Long-Term API Keys and integrate them with Emby.
+
+## Prerequisites
+
+- An AWS account with Bedrock access enabled
+- Emby account (Pro plan required for provider keys) or self-hosted instance (free)
+
+## Overview
+
+AWS Bedrock supports **Long-Term API Keys** for simplified authentication. These keys provide direct API access without requiring IAM credentials or complex authentication flows.
+
+## Create AWS Bedrock Long-Term API Key
+
+<Steps>
+<Step>
+### Enable Model Access in Bedrock
+
+1. Log into the **AWS Console**
+2. Navigate to **AWS Bedrock** service
+3. Go to **Model access** in the left sidebar
+4. Click **Manage model access**
+5. Enable the models you want to use (e.g., Claude 4.5, Llama 3)
+6. Wait for access to be granted (usually instant for most models)
+
+</Step>
+
+<Step>
+### Create Long-Term API Key
+
+1. In AWS Bedrock console, navigate to **API Keys** in the left sidebar
+2. Click **Create Long-Term API Key**
+3. Set expiry date ("Never expires" is recommended)
+4. Click **Generate**
+5. **Important**: Copy the API key immediately - it's only shown once!
+
+</Step>
+
+</Steps>
+
+## Add to Emby
+
+<Steps>
+<Step>
+### Navigate to Provider Keys
+
+1. Log into [Emby Dashboard](https://dev.emby.ai/home)
+2. Select your organization and project
+3. Go to **Provider Keys** in the sidebar
+
+</Step>
+
+<Step>
+### Add AWS Bedrock Provider Key
+
+1. Click **Add** for **AWS Bedrock**
+2. Paste your Long-Term API Key
+3. **Select Region Prefix** based on where you want to use your models:
+   - **us.** - For US regions (`us-east-1`, `us-west-2`)
+   - **eu.** - For European regions (`eu-central-1`, `eu-west-1`)
+   - **global.** - For global/cross-region endpoints
+4. Click **Add Key**
+
+The system will validate your key and confirm the connection.
+
+</Step>
+
+<Step>
+### Test the Integration
+
+Test your integration with a simple API call:
+
+```bash
+curl -X POST https:/dev.emby.ai/v1/chat/completions \
+  -H "Authorization: Bearer EMBY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "aws-bedrock/claude-4-5-sonnet",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello from AWS Bedrock!"
+      }
+    ]
+  }'
+```
+
+Replace `EMBY_API_KEY` with your Emby API key.
+
+</Step>
+</Steps>
+
+## Available Models
+
+Once configured, you can access all AWS Bedrock models through Emby:
+
+- **Anthropic Claude**: `aws-bedrock/claude-4-5-sonnet`, `aws-bedrock/claude-4.5-haiku`
+- **Meta Llama**: `aws-bedrock/llama-3-2-90b`, `aws-bedrock/llama-3-2-11b`
+- **Amazon Titan**: `aws-bedrock/amazon.titan-text-express-v1`
+- **And more...**
+
+## Troubleshooting
+
+### "Model not available" error
+
+- Verify you've enabled model access in AWS Bedrock console
+- Check that the region where you created your key has access to the model
+- Some models are only available in specific regions
+
+### Rate limiting
+
+- AWS Bedrock has request quotas per model and region
+- Monitor usage in AWS Bedrock console
+- Consider requesting quota increases for high-volume workloads

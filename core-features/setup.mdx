@@ -1,0 +1,311 @@
+---
+title: Setup Guide
+sidebarTitle: Setup Guide
+icon: wrench
+---
+
+Complete guide to setting up emby for your development environment.
+
+## Environment Setup
+
+### 1. Store Your API Key Securely
+
+<Tabs>
+  <Tab title="Linux/macOS">
+    Add to your shell configuration file:
+
+    ```bash
+    # ~/.bashrc or ~/.zshrc
+    export EMBY_API_KEY="your-api-key-here"
+    ```
+
+    Then reload:
+
+    ```bash
+    source ~/.bashrc
+    # or
+    source ~/.zshrc
+    ```
+
+    Or use a `.env` file:
+
+    ```bash
+    echo "EMBY_API_KEY=your-api-key-here" >> .env
+    ```
+
+  </Tab>
+
+  <Tab title="Windows">
+    **PowerShell:**
+
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable("EMBY_API_KEY", "your-api-key-here", "User")
+    ```
+
+    **Command Prompt:**
+
+    ```cmd
+    setx EMBY_API_KEY "your-api-key-here"
+    ```
+
+  </Tab>
+
+  <Tab title=".env File">
+    Create a `.env` file in your project root:
+
+    ```bash
+    EMBY_API_KEY=your-api-key-here
+    ```
+
+    **Python:**
+
+    ```python
+    from dotenv import load_dotenv
+    load_dotenv()
+    ```
+
+    **JavaScript:**
+
+    ```javascript
+    require('dotenv').config()
+    ```
+
+    <Warning>
+      Add `.env` to your `.gitignore` to avoid committing secrets.
+    </Warning>
+
+  </Tab>
+</Tabs>
+
+### 2. Install SDK
+
+<Tabs>
+  <Tab title="Python">
+    ```bash
+    pip install openai python-dotenv
+    ```
+  </Tab>
+
+  <Tab title="JavaScript / TypeScript">
+    ```bash
+    npm install openai dotenv
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```bash
+    go get github.com/sashabaranov/go-openai
+    ```
+  </Tab>
+
+  <Tab title="Other Languages">
+    emby works with any HTTP client.  
+    See [API Reference](/api-reference/introduction) for details.
+  </Tab>
+</Tabs>
+
+### 3. Configure Your Client
+
+<Tabs>
+  <Tab title="Python">
+    ```python
+    import os
+    from openai import OpenAI
+
+    client = OpenAI(
+        base_url="https://dev.emby.ai/v1",
+        api_key=os.getenv("EMBY_API_KEY")
+    )
+
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": "Hello!"}]
+    )
+
+    print(response.choices[0].message.content)
+    ```
+
+  </Tab>
+
+  <Tab title="JavaScript">
+    ```javascript
+    import OpenAI from "openai"
+
+    const client = new OpenAI({
+      baseURL: "https://dev.emby.ai/v1",
+      apiKey: process.env.EMBY_API_KEY
+    })
+
+    const response = await client.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: "Hello!" }]
+    })
+
+    console.log(response.choices[0].message.content)
+    ```
+
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```ts
+    import OpenAI from "openai"
+
+    const client = new OpenAI({
+      baseURL: "https://dev.emby.ai/v1",
+      apiKey: process.env.EMBY_API_KEY
+    })
+
+    const response = await client.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: "Hello!" }]
+    })
+
+    console.log(response.choices[0].message.content)
+    ```
+
+  </Tab>
+
+  <Tab title="Go">
+    ```go
+    package main
+
+    import (
+        "context"
+        "fmt"
+        "os"
+
+        openai "github.com/sashabaranov/go-openai"
+    )
+
+    func main() {
+        config := openai.DefaultConfig(os.Getenv("EMBY_API_KEY"))
+        config.BaseURL = "https://dev.emby.ai/v1"
+        client := openai.NewClientWithConfig(config)
+
+        resp, err := client.CreateChatCompletion(
+            context.Background(),
+            openai.ChatCompletionRequest{
+                Model: openai.GPT4,
+                Messages: []openai.ChatCompletionMessage{
+                    {
+                        Role:    openai.ChatMessageRoleUser,
+                        Content: "Hello!",
+                    },
+                },
+            },
+        )
+
+        if err != nil {
+            fmt.Println(err)
+            return
+        }
+
+        fmt.Println(resp.Choices[0].Message.Content)
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+<Note>
+  For more details on chat completions, see our [Chat Completion SDK
+  Documentation](/api-reference/chat).
+</Note>
+
+## Project Setup
+
+### For New Projects
+
+1. **Create project directory**
+
+```bash
+mkdir my-ai-project
+cd my-ai-project
+```
+
+2. **Initialize project**
+
+```bash
+# Python
+python -m venv venv
+source venv/bin/activate
+pip install openai python-dotenv
+
+# JavaScript
+npm init -y
+npm install openai dotenv
+```
+
+3. **Create .env file**
+
+```bash
+echo "EMBY_API_KEY=your-key-here" > .env
+echo ".env" >> .gitignore
+```
+
+4. **Create first script**
+
+See [First Request Guide](/home/getting-started/first-request)
+
+### For Existing Projects
+
+```python
+client = OpenAI(
+    base_url="https://dev.emby.ai/v1",
+    api_key="your-emby-key"
+)
+```
+
+That’s it. All existing code continues to work.
+
+## Verify Setup
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl https://dev.emby.ai/v1/chat/completions \
+      -H "Authorization: Bearer $EMBY_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "gpt-4",
+        "messages": [{"role": "user", "content": "Say setup successful!"}],
+        "max_tokens": 10
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="API key not found">
+    Verify `EMBY_API_KEY` is set and reload your shell.
+  </Accordion>
+
+  <Accordion title="Authentication failed (401)">
+    Ensure the key is valid and has no extra spaces.
+  </Accordion>
+
+  <Accordion title="Connection timeout">
+    Check firewall, VPN, and network connectivity.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Text Generation" icon="code" href="/core-features/text-generation">
+    Build your first AI application
+  </Card>
+
+  <Card title="API Reference" icon="file-code" href="/api-reference/introduction">
+    Complete API documentation
+  </Card>
+
+  <Card title="Models Catalog" icon="star" href="/core-features/models">
+    Browse all available models
+  </Card>
+</CardGroup>
+
+> To discover all documentation pages, fetch:
+> [https://docs.emby.io/llms.txt](https://docs.emby.io/llms.txt)

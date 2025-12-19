@@ -1,0 +1,267 @@
+---
+title: Streaming Responses
+sidebarTitle: Streaming
+icon : signal-stream
+---
+
+## [Streaming a Chat Completion](#streaming-a-chat-completion)
+
+For a more responsive user experience, you can stream the model's response in real-time. This allows your application to display the response as it's being generated, rather than waiting for the complete response.
+
+To enable streaming, set the parameter `stream=True` (Python) or `stream: true` (JavaScript). The completion function will then return an iterator of completion deltas rather than a single, full completion.
+
+<CodeGroup>
+
+```python Python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("EMBY_API_KEY"),
+    base_url="https://dev.emby.ai/v1"
+)
+
+stream = client.chat.completions.create(
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a helpful assistant."
+        },
+        {
+            "role": "user",
+            "content": "Explain the importance of fast language models",
+        }
+    ],
+    model="gpt-5",
+    temperature=0.5,
+    max_completion_tokens=1024,
+    top_p=1,
+    stop=None,
+    stream=True,
+)
+
+for chunk in stream:
+    print(chunk.choices[0].delta.content, end="")
+```
+
+```javascript JavaScript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+    apiKey: process.env.EMBY_API_KEY,
+    baseURL: "https://dev.emby.ai/v1"
+});
+
+const stream = await client.chat.completions.create({
+    messages: [
+        {
+            role: "system",
+            content: "You are a helpful assistant."
+        },
+        {
+            role: "user",
+            content: "Explain the importance of fast language models",
+        }
+    ],
+    model: "gpt-5",
+    temperature: 0.5,
+    max_completion_tokens: 1024,
+    top_p: 1,
+    stop: null,
+    stream: true,
+});
+
+for await (const chunk of stream) {
+    process.stdout.write(chunk.choices[0]?.delta?.content || "");
+}
+```
+
+</CodeGroup>
+
+## [Streaming an Async Chat Completion](#streaming-an-async-chat-completion)
+
+You can combine the benefits of streaming and asynchronous processing by streaming completions asynchronously. This is particularly useful for applications that need to handle multiple concurrent conversations.
+
+<CodeGroup>
+
+```python Python
+import asyncio
+import os
+from openai import AsyncOpenAI
+
+async def main():
+    client = AsyncOpenAI(
+        api_key=os.environ.get("EMBY_API_KEY"),
+        base_url="https://dev.emby.ai/v1"
+    )
+
+    stream = await client.chat.completions.create(
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant."
+            },
+            {
+                "role": "user",
+                "content": "Explain the importance of fast language models",
+            }
+        ],
+        model="gpt-5",
+        temperature=0.5,
+        max_completion_tokens=1024,
+        top_p=1,
+        stop=None,
+        stream=True,
+    )
+
+    async for chunk in stream:
+        print(chunk.choices[0].delta.content, end="")
+
+asyncio.run(main())
+```
+
+```javascript JavaScript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+    apiKey: process.env.EMBY_API_KEY,
+    baseURL: "https://dev.emby.ai/v1"
+});
+
+async function main() {
+    const stream = await client.chat.completions.create({
+        messages: [
+            {
+                role: "system",
+                content: "You are a helpful assistant."
+            },
+            {
+                role: "user",
+                content: "Explain the importance of fast language models",
+            }
+        ],
+        model: "gpt-5",
+        temperature: 0.5,
+        max_completion_tokens: 1024,
+        top_p: 1,
+        stop: null,
+        stream: true,
+    });
+
+    for await (const chunk of stream) {
+        process.stdout.write(chunk.choices[0]?.delta?.content || "");
+    }
+}
+
+main();
+```
+
+</CodeGroup>
+
+## [Best Practices for Streaming](#best-practices-for-streaming)
+
+When implementing streaming responses, consider these best practices:
+
+### Error Handling
+
+Always implement proper error handling when streaming responses, as network issues can occur during the stream:
+
+<CodeGroup>
+
+```python Python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("EMBY_API_KEY"),
+    base_url="https://dev.emby.ai/v1"
+)
+
+try:
+    stream = client.chat.completions.create(
+        messages=[
+            {"role": "user", "content": "Tell me a story"}
+        ],
+        model="llama-3.3-70b-versatile",
+        stream=True,
+    )
+    
+    for chunk in stream:
+        if chunk.choices[0].delta.content:
+            print(chunk.choices[0].delta.content, end="")
+            
+except Exception as e:
+    print(f"Error during streaming: {e}")
+```
+
+```javascript JavaScript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+    apiKey: process.env.EMBY_API_KEY,
+    baseURL: "https://dev.emby.ai/v1"
+});
+
+try {
+    const stream = await client.chat.completions.create({
+        messages: [
+            { role: "user", content: "Tell me a story" }
+        ],
+        model: "llama-3.3-70b-versatile",
+        stream: true,
+    });
+    
+    for await (const chunk of stream) {
+        process.stdout.write(chunk.choices[0]?.delta?.content || "");
+    }
+} catch (error) {
+    console.error("Error during streaming:", error);
+}
+```
+
+</CodeGroup>
+
+### Buffer Management
+
+For web applications, consider implementing a buffer to batch small chunks together for better UI performance:
+
+```javascript JavaScript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+    apiKey: process.env.EMBY_API_KEY,
+    baseURL: "https://dev.emby.ai/v1"
+});
+
+async function streamWithBuffer() {
+    const stream = await client.chat.completions.create({
+        messages: [
+            { role: "user", content: "Explain quantum computing" }
+        ],
+        model: "llama-3.3-70b-versatile",
+        stream: true,
+    });
+    
+    let buffer = "";
+    const bufferSize = 5;
+    let chunkCount = 0;
+    
+    for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || "";
+        buffer += content;
+        chunkCount++;
+        
+        if (chunkCount >= bufferSize) {
+            console.log(buffer);
+            buffer = "";
+            chunkCount = 0;
+        }
+    }
+    
+    if (buffer) {
+        console.log(buffer);
+    }
+}
+
+streamWithBuffer();
+```
